@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>拼get请求后面地址</title>
+</head>
+<body>
+    <script>
+    function setGetUrl(url,jsonData){
+        let urlPara = "";
+        for(let key in jsonData){
+            para = "";
+            para = key+'='+jsonData[key]+"&";
+            urlPara = urlPara + para;
+        }
+        urlPara = urlPara.substr(0,urlPara.length-1);
+        return url+ "?" + urlPara
+    }
+    let sendJson = {
+        id:1,
+        name:'kk',
+        len:2,
+        hobby:'cooking'
+    }
+    let getUrl = setGetUrl("http://coll.qbhx.com/collection/user/home",sendJson)
+    
+    </script>
+</body>
+</html>
