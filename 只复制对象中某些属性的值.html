@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>只复制对象中，某些属性的值</title>
+</head>
+<body>
+    <script>
+    function copyPartObj(arr,sourceObj){
+        let sourceKeys = Object.keys(sourceObj);
+        let targetObj = {};
+        arr.forEach((value) => {
+            if(sourceKeys.indexOf(value)>-1){
+                targetObj[value] = sourceObj[value]
+            }
+        });
+        return targetObj;
+    }
+
+    //in操作符，可以判断对象里是否有某个属性
+    function copyPartObj2(arr,sourceObj){
+        let targetObj = {};
+        arr.forEach((value)=>{
+            if(value in sourceObj){
+                targetObj[value] = sourceObj[value]
+            }
+        });
+        return targetObj;
+    }
+    let oldObj = {
+        a:1,
+        b:[1,2],
+        cc:3
+    }
+        
+    let newObj = copyPartObj(['a','b'],oldObj);
+    let newObj2 = copyPartObj2(['a','b'],oldObj);
+    </script>
+</body>
+</html>

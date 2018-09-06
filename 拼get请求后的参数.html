@@ -8,15 +8,12 @@
 </head>
 <body>
     <script>
-    function setGetUrl(url,jsonData){
-        let urlPara = "";
+    function setGetUrl(url,jsonData){        
+        let dataArr = [];
         for(let key in jsonData){
-            para = "";
-            para = key+'='+jsonData[key]+"&";
-            urlPara = urlPara + para;
-        }
-        urlPara = urlPara.substr(0,urlPara.length-1);
-        return url+ "?" + urlPara
+            dataArr.push(key+'='+jsonData[key]);
+        }        
+        return url+ "?" + dataArr.join('&');
     }
     let sendJson = {
         id:1,

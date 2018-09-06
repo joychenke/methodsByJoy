@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    /* 
+    实现思路：
+    1，Object.prototype.toString 方法返回的是对象的类型字符串
+     */
+    function checkType(para){
+        return Object.prototype.toString.call(para).slice(8,-1);
+    }
+
+    let str = '1cd'; //"String"
+    let num = 123; //"Number"
+    let flag = true; //"Boolean"
+    let unde = undefined;//Undefined
+    let fn = function(){console.log(1);} //"Function"
+    let nul = "Null";//"Null"
+    let reg = /\d/gi;//"RegExp"
+</script>
+</body>
+</html>

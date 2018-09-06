@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>当前天的往后数的第count天,且剔除周末</title>
 </head>
-
 <body>
     <script>
         function getCountNextDay(day,count){
@@ -22,9 +20,9 @@
                 if((weekday + weekend*2 < 6) && (weekday + weekend*2 > 0)){//向后推迟一次，结束                
                      
                 }else if(weekday + weekend*2 == 6){//周六
-                    nextFewDays = new Date(nextFewDays.getTime()*2*24 * 60 * 60 * 1000)
+                    nextFewDays = new Date(nextFewDays.getTime()+2*24 * 60 * 60 * 1000)
                 }else if(weekday + weekend*2 == 7){//周日
-                    nextFewDays = new Date(nextFewDays.getTime()*1*24 * 60 * 60 * 1000)
+                    nextFewDays = new Date(nextFewDays.getTime()+1*24 * 60 * 60 * 1000)
                 }
                 let y = nextFewDays.getFullYear();
                 let m = nextFewDays.getMonth()+1;
@@ -38,7 +36,7 @@
             }             
         }
         let day = new Date();
-        console.log(getCountNextDay(day,40))
+        console.log(getCountNextDay(day,5))
     </script>
 </body>
 
