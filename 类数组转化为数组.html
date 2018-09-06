@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>类数组转换为数组</title>
+</head>
+<body>
+    <script>
+        /* 类数组转换为数组:
+        1,apply方法
+        2，rest方法
+        3，bind方法 */
+        function funToArr(){
+            var a = Array.prototype.slice;
+            console.log(arguments)
+            return a.apply(arguments);
+        }
+        function funToArr2(...arrs){
+            return arrs
+        }
+        function funToArr3(){
+            var u = Array.prototype.slice;
+            var s = Function.prototype.call.bind(u);
+            return s(arguments);
+        }    
+        </script>
+</body>
+</html>
