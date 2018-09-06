@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>如何判断数组类型</title>
+</head>
+<body>
+    <script>
+    let arr = [1,2,3];
+    //constructor
+    if(arr.constructor === Array){
+        console.log(true)
+    }
+
+    //instanceof,因为同一条原型链上的对象，通过instanceof方法，返回的都是true
+    if(arr instanceof Array && arr instanceof Object){
+        console.log(true);
+    }
+
+    //用toString方法，判断
+    function type(obj){
+        return Object.prototype.toString.call(obj).slice(8,-1);
+    }
+    let m = {};
+    let s = type(m)
+    console.log(s);
+    console.log(typeof s);
+
+
+    
+    /* Object.prototype.toString.call(para) 返回的是"[object para的类型]" ，如para是123，则返回 "[object Number]" ，对返回的这个字符串进行截取slice（8，-1)，即可得到Number*/
+    </script>
+</body>
+</html>

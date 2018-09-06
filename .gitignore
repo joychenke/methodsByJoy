@@ -1,2 +1,6 @@
+# Editor directories and files
+# *.a  忽略.a结尾的文件
+# !lib.a # 忽略所有.a结尾的文件
+
 someTests/
 notUpload/
