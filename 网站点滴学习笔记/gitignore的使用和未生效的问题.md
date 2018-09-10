@@ -35,7 +35,7 @@
     2. 方法二：从本地删除这些文件，并且在gitignore中添加这些文件，然后push到远程
 
 7. gitignore不生效的原因？
-    + 在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的，这时候我们就应该先把本地缓存删除，然后再进行git的push。代码是（代码段1） `git rm -r --cached . ` ,`git add .` , `git commit -m 'update .gitignore'`
+    + 在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的，这时候我们就应该先把本地缓存删除，然后再进行git的push。代码是（代码段1） `git rm -r --cached . ` ,`git add .` , `git commit -m 'update .gitignore'` 亲测有效。
     + gitignore值忽略没被track的文件。如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。
 
 8. 之前没写gitignore就上传了一些没必要文件，后来写了，需要删掉远程仓库的文件，怎么办呢？
