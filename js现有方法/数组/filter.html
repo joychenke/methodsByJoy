@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>filter函数</title>
+</head>
+<body>
+    <script>
+    /* 描述：filter(fn,thisValue)返回一个新数组，新数组中的元素是数组中符合条件的所有元素
+    1，不会对空数组进行检测，不会改变原始数组
+    2,fn必填，是function(currentValue,index,arr)，currentValue，必填，当前元素值，index，可选，当前元素索引，arr，可选，当前元素所属数组
+    3，thisValue，可选，对象作为执行回调是使用，传递给函数，用作this*/    
+    </script>
+    <script>
+    let fruits= ['apple','banana','mango','grapes','orange'];
+    function fruitsItem(query,fruitsArr){//找到fruits中含有query字段的项
+        
+        let result = fruitsArr.filter(function(currentVal,index,arr){
+            return currentVal.toLowerCase().indexOf(query)>-1
+        })
+        return result;
+    }
+    let apArr = fruitsItem('ap',fruits);// ["apple", "grapes"]
+    </script>
+</body>
+</html>

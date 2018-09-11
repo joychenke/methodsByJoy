@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+    <title>Vue.set方法 </title>
+</head>
+
+<body>
+    <style>
+        .btn{
+            margin-top: 20px;
+        }
+    </style>
+    <div id="app2">
+        <!--想了解这里key的作用请访问：(https://cn.vuejs.org/v2/api/#key)-->
+        <p v-for="item in items" :key="item.id">
+            {{item.message}}
+        </p>
+        <!--@click等价于v-on:click-->
+        <button class="btn" @click="btn1Click">点我试试</button><br />
+        <button class="btn" @click="add">vueGet动态赋值</button><br />
+        <button class="btn" @click="setAttr">vueGet新加属性</button><br />
+        <button class="btn" @click="getItems">打印item数据</button><br />
+
+    </div>
+    <script>
+        /* Vue.set官方文档：https://cn.vuejs.org/v2/api/#Vue-set 
+        作用：向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新
+        注意：对象不能是 Vue 实例，或者 Vue 实例的根数据对象*/
+
+        /* some tips：
+        1， Vue数组的变异方法只能增删，不能编辑已有的数据
+        2，Vue.set()方法能修改和添加数据
+        3,Vue.set(target,key,value) target是要更改的数据源，一般是数组或对象；key是要更改的具体数据,，如果是数组中，是数组的下标，即key值；value是重新赋的值，即key对应的value值
+        3，Vue.set()在methods中也可以写成this.$set()*/
+        var vm2=new Vue({
+            el:"#app2",
+            data:{
+                items:[
+                    {message:"Test one",id:"cc"},
+                    {message:"Test two",id:"dd"},
+                    {message:"Test three",id:"ee"}
+                ]
+            },
+            methods:{
+                btn1Click(){
+                    //Vue数组的变异方法
+                    this.items.push({message:"动态新增"});//为data中的items动态新增一条数据
+                },
+                add(){
+                    let time = (new Date()).getTime();
+                    Vue.set(this.items,0,{message:'changed list'+time,id:'cc'});
+                },
+                setAttr(){
+                    let itemLen = this.items.length;
+                    console.log(itemLen);
+                    this.$set(this.items,itemLen,{message:'set Attribute',id:itemLen});
+                },
+                getItems(){
+                    console.log(this.items);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
