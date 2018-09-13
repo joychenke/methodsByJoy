@@ -77,4 +77,34 @@
 ## Action
 1. Action是什么？和Mutation区别？
     + Action用来提交Mutation。
-    + Action
+    + Action可以包含任何异步操作。
+2. Actions对象里方法传的参数是啥？
+     
+    <pre>actions:{
+        increment(context){
+            context.commit('increment');
+        }
+    }</pre>
+    + context对象和store具有相同方法和属性。很多时候，会运用对象的解构赋值将actions里commit传参解构出来，比如在app.js里，如下
+    <pre>actions:{
+        toggleSideBar({commit}){
+            commit('TOGGLE_SIDEBAR');
+        }
+    }</pre>
+3. Action通过什么方式触发？
+    + 通过store.dispatch方式触发，如：`Store.dispatch('increment')`;
+4. Action和Mutation区别？
+    + Action内部可执行异步操作，mutation不行
+5. Actions支持什么样的分发方式？
+    + 载荷形式
+    <pre>
+    store.dispatch('incrementAsync',{
+        amount:10
+    })</pre>
+    + 对象形式
+    <pre>
+    store.dispatch({
+        type:'incrementAsync',
+        amount:10
+    })</pre>
+    
