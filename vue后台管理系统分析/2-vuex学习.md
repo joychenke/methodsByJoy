@@ -78,8 +78,7 @@
 1. Action是什么？和Mutation区别？
     + Action用来提交Mutation。
     + Action可以包含任何异步操作。
-2. Actions对象里方法传的参数是啥？
-     
+2. Actions对象里方法传的参数是啥？     
     <pre>actions:{
         increment(context){
             context.commit('increment');
@@ -92,7 +91,7 @@
         }
     }</pre>
 3. Action通过什么方式触发？
-    + 通过store.dispatch方式触发，如：`Store.dispatch('increment')`;
+    + 通过store.dispatch方式触发，如：`store.dispatch('increment')`;
 4. Action和Mutation区别？
     + Action内部可执行异步操作，mutation不行
 5. Actions支持什么样的分发方式？
@@ -107,4 +106,44 @@
         type:'incrementAsync',
         amount:10
     })</pre>
-    
+6. 在组件中如何分发action？
+   + 使用`this.$store.dispatch('xxx') `分发action。
+        * 使用集成环境中的app.js中的size变量为例，说明state，mutations和actions
+            1. 在state中定义需要改变的变量size
+            2. 在mutations中改变变量size，事件类型type为`SET_SIZE`（mutation的type通常是用常量来写），定义回调函数handler为：
+            <pre>
+            (state,size) => {//第一个参数是state，第二个参数是载荷
+                state.size = size;
+                Cooke.set('size',size);
+            }</pre>
+            3. 在actions中定义setSize，提交mutation
+            <pre>
+            setSize({commit},size){
+                commit('SET_SIZE',size);
+            }
+            </pre>
+            4. 在需要改变size的时候，在子组件里分发action，如SizeSelect的index.vue中
+            <pre>
+            handleSetSize(size){
+                this.$store.dispatch('setSize',size);
+            }
+            </pre>
+            5. 至此，一次vuex改变状态就完成
+
+   + 使用mapAction辅助函数将组件methods映射为store.dispatch调用（需现在跟节点注入store）
+        <pre>
+        imort {mapActions} from'vuex
+        //...
+        export default {
+            methods:{
+                ...mapActions(['increment','incrementBy'])
+                //将this.increment映射为`this.$store.dispatch('increment')
+                //将this.incrementBy(amount)映射为this.$store.dispatch('incrementBy', amount)
+            }
+        }
+   </pre>
+7. store.dispatch有哪些特性？
+    1. store.dispatch可以处理被触发的action函数返回的promise
+    2. stroe.dispatch仍旧返回一个promise
+8. 用集成环境总的GetUserInfo，来说明组合action的应用：
+
