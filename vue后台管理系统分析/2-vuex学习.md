@@ -37,7 +37,7 @@
 3. mapGetters是什么？
     + mapGetters辅助函数仅仅将store中的getter映射到局部计算属性  
 
-## Muatation
+## Mutation
 1. Mutation用来干什么？mutation由什么构成？在哪里进行状态更改？第一个参数是什么？
     + mutation：更改store中状态（state)的唯一方法。
     + mutation有一个type（事件类型）和handler（回调函数）。
@@ -144,6 +144,13 @@
    </pre>
 7. store.dispatch有哪些特性？
     1. store.dispatch可以处理被触发的action函数返回的promise
-    2. stroe.dispatch仍旧返回一个promise
-8. 用集成环境总的GetUserInfo，来说明组合action的应用：
+    2. store.dispatch仍旧返回一个promise
+8. 用集成环境中的GetUserInfo，来说明组合action的应用：<font color=#46B096>(Action这一部分，后续还要继续看，GetUserInfo实例还要完善)</font>
+    1. GetUserInfo是注册的一个action，在user.js的actions中,返回的是一个promise
+    2. {commit，state} 是解构出store对象的commit方法和state属性，即`store.state`和`store.commit`
+    3. GetUserInfo返回的是一个promise对象，在此对象中，调用接口，提交mutation（用commit方法）
+    4. 在permission.js中，需要拉取用户信息时，引入store，然后用dispatch分发action
+        * 第一步，引入store：`import store from './store'`
+        * 第二步，分发action：`store.dispatch('GetUserInfo').then().catch()`
+    
 
