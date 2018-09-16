@@ -153,4 +153,7 @@
         * 第一步，引入store：`import store from './store'`
         * 第二步，分发action：`store.dispatch('GetUserInfo').then().catch()`
     
-
+## Module
+1. Module用来干什么？
+    + Module用来将 store 分割成模块（module）。
+    + 每个模块有自己的state，mutation，action，getter,甚至是嵌套子模块——从上至下进行同样方式的分割.
