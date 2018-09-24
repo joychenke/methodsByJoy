@@ -1,52 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>bind函数</title>
-</head>
-<body>
-    <script>
-    //
-    /* bind函数：fn.bind(this,arg1,arg2...) */
-    this.a = 1;
-    var module = {
-        a: 2,
-        getA: function(){
-            return this.a;
-        }
-    };
-    module.getA();//2
-    var getA1 = module.getA;//1
-    
-    //使用bind，将函数绑定到特定的环境下  （本例中，bind将getA1绑定到module环境下）
-    var getA2 = getA1.bind(module);
-    getA2();//2
-    </script>
-    <script>
-    /* 让函数有预设参数 */
-    function list(){
-        return Array.prototype.slice.call(arguments);
-    }    
-    var list1 = list.bind(undefined,4);//给list绑定一个预设参数4
 
-    list1();//[4]
-    list1(1,2,3);//[4,1,2,3]
-    </script>
-    <script>
-    /* setTimeout:不bind是this指向的是全局对象，bind后，this可指向实例对象 */
-    var name = '全局'
-    function Fun1(){
-        this.name = '实例';
-    }
-    Fun1.prototype.fun2 = function(){
-        setTimeout(function(){this.fun3.bind(this)},1000)
-    }
-    Fun1.prototype.fun3 = function(){
-        console.log(this.name);
-    }
-    var fun = new Fun1();
-    </script>    
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>bind函数</title>
+</head>
+
+<body>
+	<script>
+		//
+		/* bind函数：fn.bind(this,arg1,arg2...) */
+		this.a = 1;
+		var module = {
+			a: 2,
+			getA: function () {
+				return this.a;
+			}
+		};
+		module.getA(); //2
+		var getA1 = module.getA; //1
+
+		//使用bind，将函数绑定到特定的环境下  （本例中，bind将getA1绑定到module环境下）
+		var getA2 = getA1.bind(module);
+		getA2(); //2
+
+	</script>
+	<script>
+		/* 让函数有预设参数 */
+		function list() {
+			return Array.prototype.slice.call(arguments);
+		}
+		var list1 = list.bind(undefined, 4); //给list绑定一个预设参数4
+
+		list1(); //[4]
+		list1(1, 2, 3); //[4,1,2,3]
+
+	</script>
+	<script>
+		/* setTimeout:不bind是this指向的是全局对象，bind后，this可指向实例对象 */
+		var name = '全局'
+
+		function Fun1() {
+			this.name = '实例';
+		}
+		Fun1.prototype.fun2 = function () {
+			setTimeout(function () {
+				this.fun3.bind(this)
+			}, 1000)
+		}
+		Fun1.prototype.fun3 = function () {
+			console.log(this.name);
+		}
+		var fun = new Fun1();
+
+	</script>
 </body>
+
 </html>
