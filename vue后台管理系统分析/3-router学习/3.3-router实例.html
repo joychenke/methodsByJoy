@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+	<script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.js"></script>
+	<title>3.1-Vue Router实例</title>
+</head>
+
+<body>
+	<div id="app">
+		<h1>Hello App!</h1>
+		<p>
+			<router-link to="/user/Foo">/user/foo</router-link><br />
+			<router-link to="/user/Foo/profilew">/user/foo/profile</router-link><br />
+			<router-link to="/user/Foo/posts">/user/foo/posts</router-link>
+		</p>
+		<router-view></router-view>
+	</div>
+	<script>
+		/* $route.params.id中的id是router-link的to属性的值中  ‘/user/’后面的单词 */
+		/* children中某一项的path属性的值，是id后面跟的单词。即 profilew或者posts，显示的是profilew或者posts对应的 component */
+		const User = {
+			template: `
+        <div class="user">
+            <h2 style='color:red'>{{$route.params.id}}</h2> 
+            <router-view></router-view>
+        </div>`
+		}
+
+		const UserHome = {
+			template: '<div>Home 快快快</div>'
+		}
+		const UserProfile = {
+			template: '<div>Profile 好吧</div>'
+		}
+		const UserPosts = {
+			template: '<div>Posts 剁剁剁</div>'
+		}
+
+		const router = new VueRouter({
+			routes: [{
+				path: '/user/:id',
+				component: User,
+				children: [
+                /* 当 id 后面无单词匹配时（即/user/Foo），加载组件 component */    
+                    {
+                        path:'',
+                        component:UserHome
+                    },
+                    {
+					/* // 当 /user/:id/proFfilew 匹配成功，
+          // UserProfile 会被渲染在 User 的 <router-view> 中 */
+					path: 'profilew',
+					component: UserProfile
+				}, {
+					path: 'posts',
+					component: UserPosts
+				}]
+			}]
+		})
+
+		const app = new Vue({
+			router
+		}).$mount("#app");
+
+	</script>
+</body>
+
+</html>

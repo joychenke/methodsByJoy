@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>setTimeout理解</title>
+</head>
+
+<body>
+	<script>
+		//面试题：
+		let ms = function () {
+			for (let i = 1; i <= 5; i++) {
+				setTimeout(function timer() {
+					console.log(i)
+				}, i * 1000)
+			}
+		}
+        //每次都是输出6的原因：for循环时setTimeout()不是立即执行的（而是下一轮事件循环时才会执行），它们的回调被push到了宏任务队列当中，而到了要执行（此）任务队列里的回调函数时，在当前作用域中找i，没找到，去它的上层找，找到了i是6。
+        //如何解决这个问题:1，给循环中的setTimeout()创建一个闭包作用域，让它找到的变量i是正确的
+
+        //解决方法1：闭包
+        for(var i = 0 ; i < 5; i ++){
+            (function(i){
+                setTimeout(() => {
+                    console.log(i+' index');
+                }, 1000);
+            })(i);
+        }
+        //解决方法2：let关键字
+        for(let i = 0; i < 5; i ++){
+            setTimeout(() => {
+                console.log(i+' index 1');                
+            }, 1000);
+        }
+        //解决方法3：利用bind函数，给setTimeout的回调函数绑定默认参数
+        for(let i = 0; i < 5; i ++){
+            setTimeout(function timer(){
+                console.log(i + 'index 2');
+            }.bind(null,i), 1000);
+        }
+        //解决方法4：利用setTimeout的第三个参数，将i传值给timer。注意，从第三个参数开始，后面的参数全部是setTimeout回调函数的传值
+        for(let i = 0; i < 5; i ++){
+            setTimeout((a,b) => {
+                console.log([a,b]);
+                console.log(a+' index 3');                
+            }, 1000,i,i+1);
+        }
+        //解决方法5:加setTimeout单独用一个方法包起来，形成一个闭包
+        let loop = function(i){
+            setTimeout(() => {
+                console.log(i+ 'index 4')
+            }, 3000);
+        }
+        for(var i = 0; i < 5; i ++){
+            loop(i);
+        }
+	</script>
+	<script>
+		console.log('global')
+
+		setTimeout(function () {
+			console.log('timeout1')
+			new Promise(function (resolve) {
+				console.log('timeout1_promise')
+				resolve()
+			}).then(function () {
+				console.log('timeout1_then')
+			})
+		}, 2000)
+
+		for (var i = 1; i <= 5; i++) {
+			setTimeout(function () {
+				console.log(i)
+			}, i * 1000)
+			console.log(i)
+		}
+
+		new Promise(function (resolve) {
+			console.log('promise1')
+			resolve()
+		}).then(function () {
+			console.log('then1')
+		})
+
+		setTimeout(function () {
+			console.log('timeout2')
+			new Promise(function (resolve) {
+				console.log('timeout2_promise')
+				resolve()
+			}).then(function () {
+				console.log('timeout2_then')
+			})
+		}, 1000)
+
+		new Promise(function (resolve) {
+			console.log('promise2')
+			resolve()
+		}).then(function () {
+			console.log('then2')
+		})
+
+	</script>
+</body>
+
+</html>

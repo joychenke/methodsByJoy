@@ -157,3 +157,22 @@
 1. Module用来干什么？
     + Module用来将 store 分割成模块（module）。
     + 每个模块有自己的state，mutation，action，getter,甚至是嵌套子模块——从上至下进行同样方式的分割.
+
+2. 模块内部的mutation和getter，接收的第一个参数是什么？getter的第三个参数是什么？
+    + 接收的第一个参数是‘模块的局部状态对象’，即state
+    + getters的第三个参数是rootState，是‘跟节点状态’
+
+3. 模块内部的action，局部状态和根节点状态，通过什么暴露？
+    + 局部状态：state   跟节点状态： rootState
+    + 通过参数解构赋值，直接解析。看例子：
+        <pre>
+        actions: {
+            increment({state,commit,rootState}){
+                if((state.count + rootState.count) % 2 === 1){
+                    commit('increment')
+                }
+            }
+        }</pre>
+
+
+    
