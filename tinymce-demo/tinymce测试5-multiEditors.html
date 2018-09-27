@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+	<script src="tinymce4.8.2/tinymce.min.js"></script>
+	<title>tinymc测试5</title>
+	<script type="text/javascript">
+		tinymce.init({
+			selector: '#myeditable-h1',
+			inline: true,
+			menubar: false,
+			toolbar: 'undo redo'
+		});
+
+	</script>
+	<script>
+		tinymce.init({
+			selector: '#myeditable-div',
+			inline: true
+		});
+
+	</script>
+</head>
+
+<body>
+	<form method="post">
+		<h1 id="myeditable-h1">This Title Can Be Edited If You Click Here</h1>
+	</form>
+
+	<form method="post">
+		<div id="myeditable-div">
+			<p>This section of content can be edited. Click here to see how.</p>
+		</div>
+	</form>
+</body>
+
+</html>

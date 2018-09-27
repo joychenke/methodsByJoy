@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +11,7 @@
 
 <body>
 	<!-- <textarea class="pageText" id="text1"></textarea> -->
-	<textarea class="ddddpageText" id="text2">111111</textarea>
+	<textarea class="ddddpageText" id="text2"></textarea>
 	<input type="button" value="提交数据" id="aa" />
 	<script>
 		$(function () {
@@ -24,13 +23,14 @@
 				"bold italic underline strikethrough removeformat", "forecolor backcolor", "image", "link",
 				
 			];
-			var toolbar_2 = ["alignleft aligncenter alignright alignjustify", "bullist numlist outdent indent",
+			var toolbar_2 = ["alignleft aligncenter alignright alignjustify", "bullist numlist outdent indent","bold italic underline strikethrough removeformat",
 				"table hr inserttime"
 			];
 			tinymce.DOM.events.domLoaded = true;
 			var editors = [];
 			tinymce.init({
-                selector: "textarea[class$=pageText]",
+                selector: "textarea[class$=pageText]",//selector configuration
+                
                 language: 'zh_CN',
 				theme: "modern",
 				height: 400,
@@ -50,10 +50,10 @@
 				show_system_default_font: true,
 				// 是否开启系统字体的探测，alimail这边是开启的，这个是alimail新增的功能。
 				// content_style : aym.global.HtmlTemplateCache.getTemplate('editorContentCss'),//alimail 这边是直接设置文本进去的，content_css是ajax加载的，效果一样，设置文本节省一个请求
-				content_css: "././styles/editorContentCss.css",
+				// content_css: "././styles/editorContentCss.css",//本地无此文件
 				// local_image : true,//alimail 插件使用的
 				// attach_owner : aym.global.UserData.getEmail(),//alimail 插件使用的
-				plugins: plugins,
+				plugins: plugins,//plugin configuration
 				toolbar_1: toolbar_1.join(" | "),
 				toolbar_2: toolbar_2.join(" | "),
 				setup: function (ed) {},
