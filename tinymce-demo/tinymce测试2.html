@@ -10,9 +10,11 @@
 </head>
 
 <body>
-	<!-- <textarea class="pageText" id="text1"></textarea> -->
+	<textarea class="pageText" id="text1"></textarea>
 	<textarea class="ddddpageText" id="text2"></textarea>
-	<input type="button" value="提交数据" id="aa" />
+    <input type="button" value="提交数据" id="aa" />
+    <hr>
+    <div class="box" id="boxContent"></div>
 	<script>
 		$(function () {
 			//------
@@ -148,8 +150,11 @@
 			});
 			//----
 			$("#aa").click(function () {
-				alert(getHtml("text2"));
-				setHtml("text1", "这只是一个测试");
+                alert(getHtml("text2"));
+                let str = getHtml("text2");
+                setHtml("text1", str);
+                console.log(str.length);
+                // $("#boxContent").html(str)
 			});
 
 			function getHtml(editorid) {
@@ -157,8 +162,13 @@
 					return "";
 				for (var i = 0; i < editors.length; i++) {
 					var editor = editors[i];
-					if (editor.id == editorid)
+                    if (editor.id == editorid){
+                        let str = editor.getBody().innerHTML
+                        console.log(editor.getBody().innerHTML);
+                        console.log(typeof str);
 						return editor.getBody().innerHTML;
+                    }
+                    
 				}
 				return "";
 			}

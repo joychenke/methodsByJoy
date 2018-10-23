@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>formData使用</title>
+</head>
+
+<body>
+	<form class="form-horizontal" method="post" id="submitForm">
+		<div class="form-group ">
+			<label class="col-md-1 col-lg-1 control-label">公告标题：</label>
+			<div class="col-md-11 col-lg-11 ">
+				<div class="notice-head"><input type="text" class="form-control" id="noticeHead" placeholder="请输入标题" name="noticeHead"></div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="uploadNoticeFile" class="col-md-1 col-lg-1 control-label">附件：</label>
+			<div class="col-lg-offset-1 col-lg-11 col-md-offset-1 col-md-11">
+				<span id="attrItems" style="float:left;">
+
+				</span>
+				<input type="file" style="width:200px;" id="uploadNoticeFile" name="files" multiple="multiple" class="form-control col-lg-6 col-md-6">
+			</div>
+		</div>
+	</form>
+
+	<script>
+		/* 使用FormData，可将一系列的键值对，来模拟完整的表单，然后使用XMLRequest方法来发送这个表单 */
+
+		//看下面的例子：
+		//1:先建一个FormData实例，然后往里面塞3个属性值
+		let formData = new FormData();
+		formData.append('title', title)
+		formData.append('files', uploadFiles)
+		formData.append('sendType', sendType)
+
+		//2：建一个实例，挂载在已有form表单（submitForm）下面，往里面塞三个属性值
+		let formEle = document.querySelector("#submitForm");
+		let formData1 = new FormData(formEle);
+		formData1.append('userId', currentUserId)
+		formData1.append('id', itemId)
+		formData1.append('typeId', secondLevelStr)
+
+        /* 提交表单时，可以直接按ajax的方式提交。也可以用xmlHttpRequest的方式提交 */
+        
+        //xmlHttpRequest方式提交步骤：
+        /* 1，新建 XMLHttpRequest对象
+            2，调用open方法，设置请求方式和地址
+            3，调用send方法，发送请求
+            4，监听onreadystatechange事件，当响应完成，且请求发送成功时，对request.responseText进行处理。
+                tips：1，readyState= 4，表示响应完成 ，status=200标识请求发送成功
+                    2，responseText是一个字符串，处理之前，需要先用JSON.parse转化成json对象*/
+        var request = new XMLHttpRequest();
+		request.open('POST', homePageUrl + '/notice/manage/edit');
+        let titleLen = title.length;
+		if (titleLen < 4 || titleLen > 40) {
+			w2alert('标题长度必须是4到40~')
+		} else {
+			request.send(formData);
+		}
+		
+		request.onreadystatechange = function () {
+			//若响应完成且请求成功
+			if (request.readyState === 4 && request.status === 200) {
+				let response = JSON.parse(request.responseText);
+				if (response.success) {
+					
+				}
+			}
+		}
+
+        //2.jquery方式提交表单，查看  jquery中提交表单.html
+	</script>
+</body>
+
+</html>

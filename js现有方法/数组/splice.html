@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>splice</title>
+</head>
+
+<body>
+	<script>
+		/* splice: 插入、删除和替换数组的元素。会改变原始数组。*/
+		//语法：
+		/* 
+        array.splice(index,howmany,item1,...,itemX) 
+		    index:必填。开始执行的下标
+		    howmany：非必填。数字，应该删除的元素个数。当howmany和后面的参数都不填时，将删除从开头到末尾的所有元素。
+            item1,...,itemX ：非必填。要添加到数组新元素。
+            返回值：被删除元素的数组
+		*/
+
+	</script>
+	
+	<script>
+		//删除数组中的指定元素
+        let arr = ['orange','apple','mango','tomatto'];
+        let index = arr.indexOf('apple');
+        let arr1 = arr.splice(index,1);//["apple"]
+        console.log(arr);//  ["orange", "mango", "tomatto"]
+
+	</script>
+</body>
+
+</html>
