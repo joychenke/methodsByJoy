@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<title>jquery中提交表单方法</title>
+</head>
+
+<body>
+    <h1>这里用到了formData，关于formData在【js现有方法的】formData.html中查看</h1>
+    <hr>
+	<form id="uploadNoticeForm">
+		userId:<input type="text" name="userId" /><br />
+		id:<input type="text" name="id" /><br />
+		files<input type="file" name="files" id="newFiles" multiple /><br />
+	</form>
+	<button id="sendData">ajax请求</button>
+	<script>
+		function getDatas() {
+			let formData = new FormData($("#uploadNoticeForm")[0]);
+			return formData;
+        }
+        
+		$("#sendData").on('click', function () {	
+			let ajaxOptions = {
+				async: false,
+				cache: false,
+				type: "post",
+				data: formData,
+				url: homePageUrl + '/notice/manage/edit',
+				dataType: 'json',
+				contentType: false, //必须
+				processData: false, //必须
+				success: function (data) {
+
+                },
+                error:function(data){
+
+                }
+            }            
+            //$.ajax(ajaxOptions);
+		})
+        /*  
+        contentType:false   告诉jquery，不要为其设置Content-Type头，防止上传失败。不设置时，Content-Type 设的是默认值 “application/x-www-form-urlencoded”  ，这会导致上传失败，并且会报404错误
+
+        processData:false    告诉jquery，不要将非字符串数据转化为字符串。不设置processData，将会报错“Uncaught TypeError: Illegal invocation”
+        */
+        
+
+	</script>
+</body>
+
+</html>

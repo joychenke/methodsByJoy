@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>bootstrap中分页</title>
+</head>
+
+<body>
+    <h1>分页使用参考地址： http://www.cnblogs.com/zooey/p/9218089.html</h1>
+	<div id="Paginator" style="text-align: right">
+		<ul id="pageLimit"></ul>
+	</div>
+	<script>
+		//bootstrap中分页使用步骤
+		/* 
+		1：定义一个div，Paginator，用来放分页；div里定义一个ul，pageLimit,用于放置各个分页
+        2：$('#pageLimit').bootstrapPaginator(pageJson); 生成分页
+        3: pageJson是初始化参数
+        */
+        var pageJson = {
+			currentPage: 1,    //当前页数
+			totalPages: totalPages,    //总的页数
+			size: "normal", //控件大小
+			bootstrapMajorVersion: 3,//bootstrap的版本号 ，如果版本是2.x，分页要用div；3.x分页要用ul>li元素
+			alignment: "right",
+			numberOfPages: 3,//显示的页码数目
+			itemTexts: function (type, page, current) {
+				switch (type) {
+					case "first":
+						return "首页";
+					case "prev":
+						return "上一页";
+					case "next":
+						return "下一页";
+					case "last":
+						return "末页";
+					case "page":
+						return page;
+				}
+			},
+			onPageClicked: function (ev, original, type, page) {//为操作按钮绑定click事件
+				getAllPages(page, showRows)
+
+			}
+		}
+
+        function getAllPages(pageNum, showRows) {
+			$.ajax({
+				type: "POST",
+				url: baseUrlLink + '/notice/home/more',
+				dataType: "json",
+				data: {
+					id: parseInt(plateId),
+					page: pageNum,
+					rows: showRows,
+				},
+				xhrFields: {
+					withCredentials: true //支持跨域发送cookie信息
+				},
+				crossDomain: true,
+				success: function (data) {
+					console.log(data);
+					if (data.success) { //	
+						generatePlate("moreLists", data.data.datas);
+
+						pageJson.currentPage = data.data.pageNum;
+
+						let pageLargest = Math.ceil(data.data.total / data.data.datas.length);
+						if (pageNum == 1) { //只有第一次请求时，才会改变pageJson.totalPages
+							pageJson.totalPages = pageLargest
+						}
+						if (pageLargest > 5) {
+							pageJson.numberOfPages = 5;
+						} else {
+							pageJson.numberOfPages = pageLargest
+						}
+						$('#pageLimit').bootstrapPaginator(pageJson);
+					}
+				}
+			})
+		}
+	</script>
+</body>
+
+</html>

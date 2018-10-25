@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>post传数据，并导出</title>
+</head>
+<h1>content-type设置： http://tool.oschina.net/commons</h1>
+<h1>blob用法：</h1>
+<body>
+	<script>
+		//创建一个form表单，url是接口url，data是要传的数据，请求方式是post
+		// 导出表格
+		export function exportExcel(url, data) {
+			let encodeParam = function (json) {
+				let tmps = [];
+				for (let key in json) {
+					tmps.push(key + '=' + json[key]);
+				}
+				return tmps.join('&');
+			}
+			let urls = url + encodeParam(data);
+			//判断是否有id为_exportForm的form表单，如果没有则创建一个隐藏的form，把url放入，然后submit
+			let exportForm = document.getElementById("_exportForm");
+			if (!exportForm) {
+				exportForm = document.createElement("form");
+				exportForm.setAttribute('id', "_exportForm");
+				exportForm.setAttribute("action", urls);
+				exportForm.setAttribute("method", "post");
+			}
+			document.body.appendChild(exportForm);
+			exportForm.submit();
+			document.body.removeChild(exportForm); //导出成功后将form元素移除以免影响下一次导出
+		}
+
+    </script>
+    
+    <script>
+    //知道导出地址的url，window.location.href直接导出
+    let url = 'url';
+    //window.location.href = url;
+
+    /* 不过这种方式如果你的url访问后的http响应头Content-Type是浏览器能识别的，浏览器则不会弹出文件下载框而是打开新窗口进行渲染。这种情况就可以用a标签的download属性来指定需要强制下载不打开新窗口。 */
+
+    /* 还有个种办法是让服务器去中转，把http响应头的Content-Type设成application/octet-stream,就都可以用window.location.href=url来下载了 */
+    </script>
+    <script>
+    //知道导出地址的url，a标签直接导出
+    //<a href="/demo.png" download>
+    </script>
+
+    <script>
+    //也可以用blob接收，将blob赋给a标签。
+    let blob = new Blob([data],{
+        type: "application/msword"
+    })
+    let url = URL.createObjectURL(blob);
+    let link = document.createElement('a');
+    link.setAttribute("href",url);
+    link.setAttribute('download','word,docx');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    </script>
+</body>
+
+</html>

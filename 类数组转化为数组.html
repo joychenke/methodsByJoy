@@ -7,12 +7,19 @@
     <title>类数组转换为数组</title>
 </head>
 <body>
+    <p>che</p>
+    <p>che</p>
+    <p>che</p>
+    <p>che</p>
+    <p>che</p>
+    <p>che</p>
+
     <script>
         /* 类数组转换为数组:
-        1,apply方法
-        2，rest方法
-        3，bind方法 */
-        function funToArr(){
+        1, array.from()方法 */
+        //除了Array.form,其他的通通不能用
+
+        /* function funToArr(){
             var a = Array.prototype.slice;
             console.log(arguments)
             return a.apply(arguments);
@@ -24,7 +31,14 @@
             var u = Array.prototype.slice;
             var s = Function.prototype.call.bind(u);
             return s(arguments);
-        }    
+        }    */
+        </script> 
+        <script>
+        var arrayLike = {'0':'gg','1':'love','2':'meimei',length:5};
+        let trueArr = Array.from(arrayLike)
+
+        let pElements = document.getElementsByTagName('p');
+        console.log(Array.from(pElements))
         </script>
 </body>
 </html>

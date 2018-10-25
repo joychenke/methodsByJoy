@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+
+<body>
+	<script>
+		function submitfcn(form) {
+			var myform = form[0];
+			var title = document.getElementById('id_title').value;
+			var content = tinyMCE.getInstanceById('id_content').getBody().innerHTML; //得到tinymce富文本编辑中的内容
+			//var exist = content.match( //{name/}/g)&;&;content.match(//{url/}/g);
+				var done = true;
+				if (!title) {
+					done = false;
+					document.getElementById('id_title').focus();
+					alert('请填写邮件标题!');
+				}
+
+				if (!exist) {
+					done = false;
+					tinyMCE.getInstanceById('id_content').getBody().focus();
+					alert('请填写邮件内容!');
+				}
+				if (done) {
+					$.ajax({
+						type: 'POST',
+						url: "/emailrecord/sendemaildialog/",
+						data: $(myform).serialize(),
+						dataType: 'json',
+						success: function (data) {
+							if (data.result == 1) {
+								alert('邮件发送成功。');
+								location.href = '/progress/summary/';
+							} else if (data.result == 0) {
+								alert('统计失败!');
+								location.href = '/progress/summary/';
+							} else {
+								alert('邮件没有发送,因为您没选人员或所选人员已完成了问卷的录入!');
+							}
+						},
+						error: function (re, status) {}
+					});
+				} else {
+					return false;
+				}
+			}
+
+	</script>
+</body>
+
+</html>

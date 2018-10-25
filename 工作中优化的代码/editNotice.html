@@ -1,0 +1,718 @@
+<style type="text/css">
+	.container {
+		width: 98% !important;
+	}
+
+	.mainpage-box {
+		margin-top: 30px;
+	}
+
+	.highlight {
+		background-color: lightblue !important;
+	}
+
+	.mce-window {
+		transform: initial !important;
+	}
+
+	.btn-display {
+		margin-right: 30px;
+	}
+
+	.select-item {
+		width: 150px;
+	}
+
+	.notice-head {
+		width: 310px !important;
+	}
+
+	.showOrNot {
+		visibility: hidden;
+	}
+
+	.title-des {
+		margin: 20px 0 30px 0 !important;
+	}
+
+	.attach-style {
+		color: #679FCC;
+		margin-right: 20px;
+	}
+
+</style>
+
+
+<div class="mainpage-box">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-lg-12">
+				<form class="form-horizontal" method="post" id="submitForm">
+
+					<div class="form-group ">
+						<label class="col-md-1 col-lg-1 control-label">公告标题：</label>
+						<div class="col-md-11 col-lg-11 ">
+							<div class="notice-head"><input type="text" class="form-control" id="noticeHead" placeholder="请输入标题" name="noticeHead"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="noticeType" class="col-md-1 col-lg-1 control-label">公告类型：</label>
+						<div class="col-md-11 col-lg-11">
+							<select class="form-control select-item pull-left" style="margin-right: 10px;" id="firstLevel" title="一级分类"
+							 onchange="selectFirstLevel(this)">
+
+							</select>
+							<select class="form-control select-item pull-left" id="secondLevel" title="二级分类" onchange="selectSecondLevel(this)">
+
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="noticeType" class="col-md-1 col-lg-1 control-label">公告正文：</label>
+						<div class="col-md-11 col-lg-11">
+							<textarea id="myTextArea"></textarea>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="uploadNoticeFile" class="col-md-1 col-lg-1 control-label">附件：</label>
+						<div class="col-lg-offset-1 col-lg-11 col-md-offset-1 col-md-11">
+							<span id="attrItems" style="float:left;">
+
+							</span>
+							<input type="file" style="width:200px;" id="uploadNoticeFile" name="files" multiple="multiple" class="form-control col-lg-6 col-md-6">
+						</div>
+					</div>
+
+
+
+					<div class="form-group">
+						<label for="sendType" class="col-md-1 col-lg-1 control-label">发送对象：</label>
+						<div class="col-md-11 col-lg-11">
+							<label class="radio-inline" id="selectLabel0">
+								<input type="radio" name="sentTypeOpt" id="allMember" value="ALL" checked> 全员
+							</label>
+							<label class="radio-inline" id="selectLabel">
+								<input type="radio" name="sentTypeOpt" id="notAllMember" value="PART"> 部分
+							</label>
+
+							<div class="showOrNot" style="margin-bottom:20px;">
+								<input type="text" style="display:inline-block;width: 300px;" class="form-control showOrNot" id="nameItems"
+								 placeholder="多个姓名用逗号隔开">
+								<input id="searchName" style="display:inline-block;margin-left:10px;border-radius: 4px; padding: 6px 12px;background-color: #e7e7e7;
+                                border: 1px solid #B6B6B6;"
+								 type="button" class="btn-default " value="搜索">
+								<div></div>
+								<div id="nameGroup">
+
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-lg-12 col-md-12 text-center">
+								<button type="button" id="saveNotice" class="w2ui-btn btn-display">暂存</button>
+								<button type="button" id="previewNotice" class="w2ui-btn btn-display">预览</button>
+								<button type="button" id="cancleNotice" class="w2ui-btn">取消</button>
+								<button type="button" id="sendNotice" class="w2ui-btn w2ui-btn-blue btn-display">直接发布</button>
+							</div>
+						</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="modal fade" id="preModal" tabindex="-1" role="dialog" aria-labelledby="preModalTitle" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title text-center" id="preModalTitle">预览</h4>
+			</div>
+			<div class="modal-body">
+				<div id="modalPreContent">
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<!-- <button type="button" class="btn btn-primary">提交更改</button> -->
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<div id="noticePreview" style="display: none; overflow: hidden;">
+	<div rel="title">
+		公告预览
+	</div>
+	<div rel="body" id="lawMailPreBody" style="background: #fff;">
+		<div class="box" id="lawMailContent" style="height: 200mm;width: 1300px;;margin: 0 auto;background-color: #fff;">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 col-lg-12">
+						<!-- <button type="button" class="btn btn-info" id="backMainpage">返回主页</button><br /> -->
+						<div class="info-detail">
+							<h1 class="text-center" id="contentTitle">公司成功中标唯品金融</h1>
+							<div class="text-center text-muted title-des"><span id="releaseUser">行政部</span>发布于<span id="releaseTime">2018-09-01
+									10:26:25</span>&nbsp;&nbsp;阅读量：<span id="readCount">1</span></div>
+							<div id="contentBody">
+
+							</div>
+							<div class="pull-left" style='margin-top:20px; height: 50px;' id="attachMents">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var firstLevelArr = []; //一级标题
+	var secondLevelArr = []; //二级标题
+	var editors = [];
+	var editDatas = {}; //编辑的内容
+	var itemId = "$!request.getParameter('itemId')"; //消息id
+	var itemStatus = "$!request.getParameter('itemStatus')"; //itemStatus
+	var imgIds = [];
+	var atts = [];
+	var users = [];
+	var releaseUserName = window.localStorage.getItem('currentUserName');
+
+	let currentUserId = window.localStorage.getItem('currentUserId');
+
+	let currentUserName = $("#tb_top_layout_main_toolbar_item_loginUsre .w2ui-tb-caption").html();
+
+	var firstLevelOptions = []; //一级菜单
+	var secondLevelOptions = []; //二级菜单
+
+
+	$(function () {
+		tinymce.execCommand('mceRemoveEditor', true, 'myTextArea');
+		initTinyMce();
+		if (itemStatus == 'RELEASE') {
+			$("#saveNotice").css('display', 'none');
+		}
+	})
+
+	function initTinyMce() {
+
+		tinymce.init({
+			selector: '#myTextArea',
+			mode: 'none',
+			theme: 'modern',
+			language: 'zh_CN',
+			menubar: true,
+			width: 1300,
+			height: 500,
+			autoresize_min_height: 350,
+			imageupload_url: homePageUrl + '/notice/manage/img/upload', //图片上传地址
+			plugins: [
+				"advlist autolink print preview lists table link  imageupload textcolor"
+			],
+			toolbar: "undo redo copy paste | bold italic underline removeformat | styleselect fontsizeselect | imageupload link | alignleft aligncenter alignright | outdent indent | bullist numlist | forecolor backcolor | preview",
+			convert_urls: false,
+			init_instance_callback: function () {
+				window.editor = this;
+				editor.setContent(editor.getBody().innerHTML);
+				editors.push(editor);
+			}
+		});
+
+
+	}
+
+	setTimeout(() => {
+		getTinyMceContent(parseInt(itemId));
+	}, 1000);
+	//请求,编辑数据
+
+
+	function getTinyMceContent(id) {
+		let searchData = {
+			userId: currentUserId,
+			id: id
+		}
+		let ajaxOptions = {
+			type: "POST",
+			url: homePageUrl + '/notice/manage/review',
+			dataType: "json",
+			data: searchData,
+			success: function (data) {
+
+				editDatas = data.data;
+				//富文本编辑器内容
+				editor.getBody().innerHTML = editDatas.content;
+				//
+				completeForm(editDatas);
+
+
+			},
+			error: function (data) {
+
+			}
+		};
+
+		$.ajax(ajaxOptions)
+	}
+
+	function completeForm(formJson) {
+		//获取第一级类型，加option
+		getFirstLevelItems();
+
+
+		//获取第二级类型，加option
+		getFirstLevelItems(formJson.firstTypeId);
+
+
+
+		$("#noticeHead").val(formJson.title);
+		({
+			imgIds,
+			atts,
+			users
+		} = formJson);
+		console.log(atts)
+		generateAttr("attrItems", atts);
+		//不是我的提醒，选中全部；是我的提醒，选中部分，有名字名字同样显示
+		if (formJson.firstTypeId != 7) {
+			$("#selectLabel0").css('display', 'inline-block');
+			$('input:radio[name="sentTypeOpt"][value="ALL"]').prop('checked', true);
+
+			$("#selectLabel").css('visibility', 'hidden');
+			$(".showOrNot").css('visibility', 'hidden');
+
+		} else {
+			$("#selectLabel").css('visibility', 'visible');
+			$(".showOrNot").css('visibility', 'visible');
+			$('input:radio[name="sentTypeOpt"][value="PART"]').prop('checked', true);
+			if (users.length > 0) {
+				generateOptation('nameGroup', users);
+			}
+
+			$("#selectLabel0").css('display', 'none');
+		}
+	}
+
+	function generateAttr(loadId, dataArr) { //atts
+		let spanItem = ``;
+
+		let spanArr = dataArr.map(function (item, index) {
+
+			spanItem +=
+				`<span id="${item.attId}" class="user-item"><span class="userName">${item.attName}</span>: <span onclick="removeAttr($(this).parent().attr('id'))" class="glyphicon glyphicon-remove close-icon">&nbsp;&nbsp;</span></span>`
+		})
+
+		$("#" + loadId).html(spanItem);
+	}
+
+	function removeAttr(id) {
+		let searchData = {
+			userId: currentUserId,
+			id: id
+		}
+		let ajaxOptions = {
+			type: "POST",
+			url: homePageUrl + '/notice/attachment/delete',
+			dataType: "json",
+			data: searchData,
+			success: function (data) {
+				console.log(data)
+				if (data.success) {
+					$("#" + id).remove();
+				}
+
+			},
+			error: function (data) {
+				console.log(data);
+			}
+		};
+
+		$.ajax(ajaxOptions)
+	}
+
+	//获取内容
+	$("#sendContent").click(function () {
+		alert(getHtml("myTextArea"));
+
+	});
+
+
+
+	function getHtml(editorid) {
+		if (editorid == "")
+			return "";
+		for (var i = 0; i < editors.length; i++) {
+			var editor = editors[i];
+			if (editor.id == editorid)
+				return editor.getBody().innerHTML;
+		}
+		return "";
+	}
+
+
+
+	//一级标题
+	//进入页面时获取一级标题
+
+
+
+
+	function getFirstLevelItems(parentId) {
+		let paramData = {};
+		if (typeof parentId !== 'undefined') {
+			paramData = {
+				parentId: parseInt(parentId),
+				userId: parseInt(currentUserId)
+			}
+		} else {
+			paramData = {
+				userId: parseInt(currentUserId)
+			}
+		}
+		$.ajax({
+			type: "POST",
+			url: homePageUrl + '/notice/manage/types/',
+			dataType: "json",
+			data: paramData,
+			success: function (data) {
+				//secondLevelOptions
+				if (!paramData.hasOwnProperty('parentId')) {
+					firstLevelOptions = data.data;
+					generateOptions("firstLevel", firstLevelOptions);
+					let firstOptionValue = 'option[value=' + String(editDatas.firstTypeId) + ']';
+					$("#firstLevel").find(firstOptionValue).attr('selected', true)
+
+				} else {
+					secondLevelOptions = data.data;
+					generateOptions("secondLevel", secondLevelOptions);
+					let secondOptionValue = 'option[value=' + String(editDatas.secondTypeId) + ']';
+					$("#secondLevel").find(secondOptionValue).attr('selected', true)
+				}
+			},
+			error: function (data) {
+				console.log(data)
+			}
+		})
+	}
+
+	//生成select下面的option
+	function generateOptions(plateIdStr, dataArr) {
+		let optionItem = ``;
+
+		let spanArr = dataArr.map(function (item, index) {
+			optionItem += `<option value="${item.id}">${item.name}</option>`
+		})
+
+		$("#" + plateIdStr).html(optionItem);
+	}
+
+	//一级标题改变时
+	function selectFirstLevel(obj) {
+		let value = obj.options[obj.selectedIndex].value;
+		console.log(value)
+		if (value == '7') { //我的提醒
+			$("#selectLabel").css('visibility', 'visible');
+			$(".showOrNot").css('visibility', 'visible');
+			$('input:radio[name="sentTypeOpt"][value="PART"]').prop('checked', true);
+
+			$("#selectLabel0").css('display', 'none');
+		} else {
+			$("#selectLabel0").css('display', 'inline-block');
+			$('input:radio[name="sentTypeOpt"][value="ALL"]').prop('checked', true);
+
+			$("#selectLabel").css('visibility', 'hidden');
+			$(".showOrNot").css('visibility', 'hidden');
+		}
+		getSecondLevelItems(value);
+	}
+
+	$('#firstLevel').on('changed.bs.select', function (e, index, bool, value) {
+
+		let firstValue = $('#firstLevel').val(); //option的value值
+
+	});
+
+	//二级标题是一级选完之后获取
+	function getSecondLevelItems(valStr) {
+		//根据id，请求二级菜单数据
+		getFirstLevelItems(valStr);
+
+	}
+
+	function selectSecondLevel(obj) {
+		let value = obj.options[obj.selectedIndex].value;
+
+	}
+
+	$('#secondLevel').on('changed.bs.select', function (e, index, bool, value) {
+		let secondValue = $('#secondLevel').val(); //option的value值
+
+	});
+
+	//公告发布、暂存、预览和取消
+
+	//直接发布
+	$('#sendNotice').on('click', function () {
+		saveNoticeFile('RELEASE');
+
+	});
+
+
+
+
+	// 暂存
+	$('#saveNotice').on('click', function () {
+		saveNoticeFile('PAUSE');
+
+	});
+
+	//预览
+	$('#previewNotice').on('click', function () {
+		$("#noticePreview").w2popup();
+		completeNotice();
+	});
+
+	function completeNotice() {
+		let title = $("#noticeHead").val();
+		let contentInfo = getHtml("myTextArea");
+		readCount = 12;
+		releaseTime = '2018-10-16 17:43:18';
+
+		$("#contentTitle").html(title);
+		$("#contentBody").html(contentInfo);
+		$("#releaseUser").html(releaseUserName);
+		$("#readCount").html(readCount);
+		$("#releaseTime").html(releaseTime);
+
+		let filesName = getFilesName();
+		let attNames = atts.map(function (item, index) {
+			return item.attName;
+		})
+		let filesNameAll = [].concat(attNames, filesName)
+		generatePlate("attachMents", filesNameAll);
+	}
+
+	function generatePlate(plateId, dataArr) {
+		let spanItem = ``;
+
+		let spanArr = dataArr.map(function (item, index) {
+			spanItem += `<span class="attach-style">${item}</span>`
+		})
+
+		$("#" + plateId).html(spanItem);
+	}
+
+
+
+	$('#cancleNotice').on('click', function () {
+		returnNoticeManagment();
+	});
+
+
+
+	//选择发送人
+	$('input[name="sentTypeOpt"]').change(function (ev, a, b, c) {
+
+		if (ev.target.value == 'PART') {
+
+			$(".showOrNot").css('visibility', 'visible')
+		} else {
+			$(".showOrNot").css('visibility', 'hidden')
+		}
+	})
+	$("#searchName").on('click', function () {
+		let val = $("#nameItems").val();
+		let account = val.split('，').join(',');
+		let searchData = {
+			account: account,
+			userId: currentUserId, //string
+		}
+		let ajaxOptions = {
+			type: "POST",
+			url: homePageUrl + '/notice/manage/user/search',
+			dataType: "json",
+			data: searchData,
+			success: function (data) {
+				console.log(data)
+
+				if (data.success) {
+					generateOptation('nameGroup', data.data);
+					$("#nameItems").val('');
+				}
+
+			},
+			error: function (data) {
+				console.log(data);
+			}
+		};
+
+		$.ajax(ajaxOptions)
+	})
+
+	function removeName(id) {
+		$("#" + id).remove();
+	}
+
+	function generateOptation(loadId, dataArr) {
+		let spanItem = ``;
+
+		let spanArr = dataArr.map(function (item, index) {
+			let id = '';
+			if (item.hasOwnProperty('userId')) {
+				id = item['userId']
+			} else {
+				id = item['id']
+			}
+			spanItem +=
+				`<span id="name${id}" class="user-item"><span class="userName">${item.userName}</span>: <span onclick="removeName($(this).parent().attr('id'))" class="glyphicon glyphicon-remove close-icon">&nbsp;&nbsp;</span></span>`
+		})
+
+		$("#" + loadId).html(spanItem);
+	}
+
+
+	//发布和预览时，提交数据
+	function saveNoticeFile(operatorType) {
+		//获取图片id的字符串找到所有图片的
+		let imgElems = $("#myTextArea_ifr").contents().find(".uploadImages");
+		let imgElemsArr = Array.from(imgElems);
+		let idArr = imgElemsArr.map((elem) => {
+			return elem.id;
+		})
+		let imageIds = idArr.join(',');
+		let sendType = $('input:radio[name="sentTypeOpt"]:checked').val();
+		let sendIds = '';
+		if (sendType == 'PART') {
+			let nameItems = $("#nameGroup .user-item");
+			let nameItemsArr = Array.from(nameItems);
+
+			let idArr = nameItemsArr.map((elem) => {
+				return elem.id.substr(4); //将name14格式的id，‘name’去掉
+			})
+
+			sendIds = idArr.join(',');
+		}
+
+		let title = $("#noticeHead").val();
+		let content = getHtml("myTextArea");
+
+		let operator = operatorType;
+		let secondLevelStr = $('#secondLevel option:selected').val();
+		let typeId = parseInt(secondLevelStr); //secondLevel
+
+		let releaseUserId = parseInt(currentUserId);
+		let releaseUserName = currentUserName;
+
+		//let formData = new FormData($("#uploadNoticeForm")[0]);
+		let formEle = document.querySelector("#submitForm");
+		let formData = new FormData(formEle);
+		formData.append('userId', currentUserId)
+		formData.append('id', itemId)
+		formData.append('typeId', secondLevelStr)
+		formData.append('content', content)
+		formData.append('sendIds', sendIds)
+		formData.append('operator', operator)
+		formData.append('userImages', imageIds)
+		formData.append('releaseUserId', releaseUserId)
+		formData.append('releaseUserName', releaseUserName)
+
+		var request = new XMLHttpRequest();
+		request.open('POST', homePageUrl + '/notice/manage/edit');
+        let titleLen = title.length;
+		if (titleLen < 4 || titleLen > 40) {
+			w2alert('标题长度必须是4到40~')
+		} else {
+			request.send(formData);
+		}
+		
+		request.onreadystatechange = function () {
+			//若响应完成且请求成功
+			if (request.readyState === 4 && request.status === 200) {
+				let response = JSON.parse(request.responseText);
+				if (response.success) {
+					if (operatorType == 'RELEASE') {
+						w2alert("发布成功！");
+					} else {
+						w2alert("暂存成功！");
+					}
+					//发布成功时，返回到公告管理
+
+					let pageData = {
+                        'nodeData':{'path':'collection/noticeManagement.html'},
+                        'text':'<span class="fa fa-inbox" style="padding-right: 5px;"></span>公告管理'
+                    };
+
+					if (pageData.nodeData.path) {
+						loadContent(pageData);
+					}
+				}
+
+
+			}
+		}
+		//let titleLen = get_length(title);
+		
+
+	}
+
+
+	//上传文件名称的数组
+	function getFilesName() {
+		let uploadFiles = $("#uploadNoticeFile").prop('files');
+
+		let filePaths = [];
+		if (uploadFiles.length > 0) {
+			for (let i = 0; i < uploadFiles.length; i++) {
+				filePaths[i] = uploadFiles[i].name
+			}
+		}
+		console.log(filePaths)
+		return filePaths;
+	}
+
+	$('#submitForm').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			noticeHead: {
+				trigger: 'blur',
+				validators: {
+					notEmpty: {
+						message: '标题不能为空~'
+					},
+					callback: {
+						message: '标题长度必须是4到40~',
+						callback: function (value, validator) {
+							//let len = get_length(value)
+							let len = value.length;
+							console.log(len)
+							if (len < 4 || len > 40) {
+								return false;
+							} else {
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+
+	//获取字符串长度，一个中文加1，一个英文加0.5
+	function get_length(s) {
+		var char_length = 0;
+		for (var i = 0; i < s.length; i++) {
+			var son_char = s.charAt(i);
+			encodeURI(son_char).length > 2 ? char_length += 1 : char_length += 0.5;
+		}
+		return char_length;
+	}
+
+</script>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<title>jquery中form表单的取值和预设值</title>
+</head>
+
+<body>
+	<form>
+		<select style="margin-right: 10px;" id="firstLevel" title="一级分类" onchange="selectChange(this)">
+			<option value="1">公司头条</option>
+			<option value="2">公告通知</option>
+			<option value="3">员工之家</option>
+			<option value="4">规章制度</option>
+			<option value="5">技能天地</option>
+			<option value="6">行业动态</option>
+			<option value="7">我的提醒</option>
+		</select>
+
+		<input type="file" id="uploadNoticeFile" style="width:200px;" name="uploadNoticeFile" multiple="multiple">
+		<input type="text" value="" name="userName" id="userName"><br />
+
+		<input type="checkbox" name="vehicle" value="Bike" /> I have a bike<br />
+		<input type="checkbox" name="vehicle" value="Car" /> I have a car<br />
+        <input type="checkbox" name="vehicle" value="Airplane" /> I have an airplane<br />
+        
+        <input type="radio" name="sex" value="female" /> 女
+        <input type="radio" name="sex" value="male" /> 男 <br />
+
+        <textarea name="comment" id="comment" cols="30" rows="10" >嗷大喵嗷大喵嗷大喵嗷大喵</textarea>
+
+		<input type="button" value="获取数据" id="btn">
+	</form>
+	<script>
+		$("#btn").on('click', function () {
+			var files = getFilesName();
+			var files1 = getFilesJs();
+            let textVal = getTextValJs();
+            let checkVal = getCheckedValJs();
+            let radio = getOptionsJs();
+            let textarea = getTextAreaJs();
+			console.log(files);
+			console.log(files1);
+			console.log(textVal);
+			console.log(checkVal);
+			console.log(radio);
+			console.log(textarea);
+		})
+
+	</script>
+	<script>
+		/* select下拉框需要知道的点：
+        1：如何设置select的某个option选中 ： 
+        2：如何读取选中的option的值
+         */
+
+		//让value=‘5’的框选中
+		$("#firstLevel").find("option[value='5']").attr('selected', true)
+
+		function selectChange() {
+			//select下拉框的内容：
+			let selVal = $("#firstLevel option:selected").val();
+			console.log(selVal);
+		}
+
+	</script>
+	<script>
+		/* file需要知道的点：
+        1，获取file框的内容
+        2, FileList：①：有length属性（因此能用Array.from()。其他一次用0,1,2..编号的方式，是File类型的文件
+                    ②：有item属性，往item中传索引值，得到FileList中的File类型文件
+    */
+
+		//jquery方法获取file内容,
+		function getFilesName() {
+
+			let uploadFiles = $("#uploadNoticeFile").prop('files');
+			let fileArr = Array.from(uploadFiles); //FileList类型的数据，有length属性，是个类数组，通过 Array.from 转化成真实数组
+			let nameArr = fileArr.map((item, index) => { //当时FileList类型时，不能用map方法
+				return item.name
+			})
+			return nameArr;
+			//$("#newFiles").prop('files', uploadFiles)
+		}
+
+		//用js获取file内容
+		function getFilesJs() {
+			let uploadFiles = document.querySelector("#uploadNoticeFile").files;
+			let nameArr = [];
+			for (let i = 0; i < uploadFiles.length; i++) {
+				let file = uploadFiles.item(i);
+				nameArr.push(file.name)
+			}
+			//return nameArr;
+			return uploadFiles;
+		}
+
+	</script>
+	<script>
+		/* input-text需要知道的点：
+        1,  jquery设置输入框的内容 : val(param)方法，值取出来是string类型
+        2， jquery读取输入框的内容 ： val()方法，val里不传参数就行
+        3，js设置输入框内容: 获取input-text元素，textDom，给它的value属性赋值，textDom.value = ‘123’ 
+        4，js读取输入框内容：获取input-text元素，textDom，获取它的value属性的值，result = textDom.value*/
+		$("#userName").val(11);
+
+		function getTextVal() {
+			let inputVal = $("#userName").val();
+			console.log(typeof inputVal)
+			return inputVal;
+		}
+
+		let textDom = document.querySelector("#userName");
+		textDom.value = "i am from js";
+
+		function getTextValJs() {
+			let inputVal = document.querySelector("#userName").value;
+			console.log(typeof inputVal)
+			return inputVal;
+		}
+
+	</script>
+	<script>
+		/* input-checkbox需要知道的点： 
+        1，jquery获取checkbox：①：each方法遍历,对于checked属性值为true的元素，获取value的值
+        2，jquery设置checkbox： ①：each方法遍历，每个元素的checked属性为true，其他为false
+        3，js获取checkbox： ①：获取元素集合，用Array.from转化为真正数组，map方法，处理数组，checked属性为true的项，值取出来
+        4，js设置checkbox：①：获取元素集合，for循环遍历此集合，根据value，设置checked=true或checked=false*/
+        //setChecked();
+        //setChecked2();
+        setCheckedJs();
+		function setChecked(){
+			$("input[name='vehicle']").each((index, item) => {
+				if (item.value == 'Car' || item.value == 'Airplane') {
+					item.checked = true;
+				} else {
+					item.checked = false;
+				}
+			})
+        }
+
+
+        function setChecked2(){//设置多个checkbox选中
+            $("input[value='Car'],input[value='Airplane']").prop("checked",true)
+        }
+
+        function setCheckedJs(){
+            let checkboxs = document.querySelectorAll("input[name='vehicle']");//Nodelist
+            for(let i = 0; i < checkboxs.length; i ++){
+                //console.log(checkboxs)
+                if(checkboxs[i].value == 'Airplane'){
+                    checkboxs[i].checked = true;
+                }else{
+                    checkboxs[i].checked = false;
+                }
+            }
+            
+            
+        }
+
+        function getCheckedVal(){//获取选中
+            let valArr = [];
+            $("input[name='vehicle']").each(function(index,item){                
+                if(item.checked){                    
+                    valArr.push(item.value)
+                }
+            })
+            return valArr;
+        }
+        function getCheckedValJs(){
+            let checkboxs = document.querySelectorAll("input[name='vehicle']");//Nodelist
+            let checkboxsArr = Array.from(checkboxs);
+            let valArr = [];
+            checkboxsArr.map((item,index) => {
+                if(item.checked){
+                    valArr.push(item.value)
+                }
+            })
+            return valArr;
+        }
+
+    </script>
+    <script>
+        /* input-radio需要知道的点： 
+        1，jquery获取checkbox：①：each方法遍历,对于checked属性值为true的元素，获取value的值
+        2，jquery设置checkbox： 获取改radio项，直接prop('checked',true)
+        3，js获取checkbox： ①：获取元素集合，用Array.from转化为真正数组，map方法，处理数组，checked属性为true的项，值取出来
+        4，js设置checkbox：获取元素dom，直接 dom.checked = true; */
+        setOptionsJs();
+    function setOptions(){
+        $("input[value='male']").prop('checked',true)
+    }
+    function setOptionsJs(){
+        let dom = document.querySelector("input[value='female']");
+        dom.checked = true;
+    }
+    function getOptions(){
+        let val = $("input[name='sex']:checked").val();
+        return val;
+        
+    }
+    function getOptionsJs(){
+        let val = document.querySelector("input[name='sex']:checked");
+        return val.value;
+    }
+    </script>
+    <script>
+        /* textarea和input-text框处理的方法一样 */
+        $("#comment").val("我是textarea中预设的内容~~~")
+    function getTextArea(){
+        let textareaVal = $("#comment").val();
+        return textareaVal;
+    }
+
+    function getTextAreaJs(){
+        let textareaVal = document.querySelector("#comment").value;
+        return textareaVal;
+    }
+    </script>
+</body>
+
+</html>
