@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <title>disabled</title>
+</head>
+<body>
+    <input type="button" value="不可用" id="not">
+    <input type="button" value="可用" id="yes">
+    <input type="button" value="我接收改变" id="getChange">
+    <script>
+    $("#not").on('click',function(){
+        $("#getChange").attr("disabled",true)
+    })
+    $("#yes").on('click',function(){
+        $("#getChange").attr("disabled",false)
+    })
+    </script>
+</body>
+</html>
