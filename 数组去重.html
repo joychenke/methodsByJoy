@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>给数组去重</title>
+</head>
+<body>
+    <script>
+    /* 1，set方法结合扩展运算符： 根据set不会加重复项的特点*/
+    let arr = ['aa',2,3,'aa',3];
+    let arr1 = [...new Set(arr)];
+    console.log(arr1);//['aa',2,3]
+    </script>
+
+    <script>
+    /* 2, set方法结合array.from：根据set不会加重复项的特点 和 Array.from 能够把set解构转化为数组结构 */
+    let arr3 = ['aa',2,3,'aa',3];
+    let arr4 = Array.from(new Set(arr3))
+    console.log(arr4);//['aa',2,3]
+
+    //写成函数
+    function dedupe(arr){
+        return Array.from(new Set(arr))
+    }
+    </script>
+    
+</body>
+</html>

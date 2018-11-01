@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>forEach用法</title>
+</head>
+<body>
+    <button onclick="getResult();">点击计算</button>
+    <div id="res"></div>
+    <script>
+    /* 
+    描述 ：array.forEach(fn，thisValue)方法用于调用数组每个元素，并将元素传递给回调函数fn。用于处理数组中的元素。
+    1， fn，必需。有三个参数，currentValue,index,arr(点钱元素所属的数组对象)
+    2，thisValue，可选。传递给函数的值一般用'this'。如果为空，“undefined” 会传递给'this'*/
+
+    function getResult(){
+        let numbers = [2,3,4,5];
+        let result = 0;
+        //通过forEach遍历数组元素
+        let a = numbers.forEach((item,index) => {
+            result = result+ item;
+        })
+        console.log(a);//undefined  说明forEach无返回值
+        document.querySelector('#res').innerHTML = result;
+    }
+    </script>
+</body>
+</html>
