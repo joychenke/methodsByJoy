@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>qs使用</title>
+</head>
+
+<body>
+    <h1>qs使用网址：http://www.mamicode.com/info-detail-2447089.html</h1>
+    <h1>
+            https://www.huxinmin.com/home/5b065ae50bcdea05baee98ea.html
+    </h1>
+	<script>
+		/* 
+    qs用到的方法：
+    1，qs.stringify(data)  
+        network里面，传给后台的json数据以formData格式传出去.
+        也可以用formData来传。        
+     */
+
+		//以登录为例，分别说明qs.stringify和formData实现
+		export function login(datas) {
+			let formData = new FormData();
+			formData.append('account', datas.account);
+			formData.append('password', datas.password);
+
+			return request({
+				url: '/login',
+				method: 'post',
+				data: qs.stringify(datas) //qs方式
+                //data:formData //formData方式
+			})
+		}
+
+    </script>
+    
+    <script>
+    //qs的作用和用法
+    /* 
+    作用：用来解析和格式化 URL查询字符串。它的功能比较简单，无法解析嵌套的对象或数组等。也无法解析null或一些特殊字符串。
+     */
+
+     //null值处理
+
+     /* 默认null会转化为空字符串 */
+     let ress2 = qs.stringify({a:null,b:''});
+      console.log(ress2)//'a=&b='
+
+    /* 参数是否有等号，都会转化为空 */
+    let ress3 = qs.parse('a&b=')
+    console.log(ress3)//{a: "", b: ""}
+
+    /* strictNullHandling来区分Null和空值。转化为字符串时，Null值将不会含有等号；转化为对象时，无等号的将转化我null */
+    let ress4 = qs.stringify({ a: null, b: '' }, { strictNullHandling: true })
+    console.log(ress4)//a&b=
+
+    let ress5 = qs.parse('a&b=',{strictNullHandling: true })
+    console.log(ress5)//{a: null, b: ""}
+    </script>
+</body>
+
+</html>

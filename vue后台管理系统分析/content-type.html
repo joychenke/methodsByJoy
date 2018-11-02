@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>content-type请求头</title>
+</head>
+<body>
+    <script>
+    /* 
+    Content-Type的值一般有三种：
+    1， application/x-www-form-urlencoded  数据编码为：名称/价值对
+        get时，form数据转换成一个字串（name1=value1&name2=value2...），加到url?后面
+        post时，浏览器把form数据封装到 http body中，然后发送到server
+        
+        jquery ajax设在contentType参数中，默认是 application/x-www-form-urlencoded
+        axios设在 headers下 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    2，multipart/form-data   数据被编码为一条消息，页上的每个控件对应消息中的一个部分
+        type=file时使用
+    
+    3，application/json   数据是json格式的字符串。此时，传的json对象要用JSON.stringify(data) 转一下
+        如：    contentType: "application/json",
+                data: JSON.stringify(caseListForm),
+     */
+    </script>
+</body>
+</html>
