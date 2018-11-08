@@ -22,6 +22,8 @@
     3，application/json   数据是json格式的字符串。此时，传的json对象要用JSON.stringify(data) 转一下
         如：    contentType: "application/json",
                 data: JSON.stringify(caseListForm),
+
+        说明：object1通过 JSON.stringify 转换之后，得到的是一个字符串str，str通过JSON.parse(str) 后，得到object2，object2的内容和object1相同
      */
     </script>
 </body>
