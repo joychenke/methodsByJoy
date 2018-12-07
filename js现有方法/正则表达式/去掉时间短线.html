@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>去掉时间的短横线</title>
+</head>
+<body>
+    <script>
+    let start = '2018-11-05';
+    let end = '2018-11-06';
+
+    function changeDate(start){
+        let reJg = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+        return start.replace(reJg,'$<year>$<month>$<day>');
+    }
+    
+    console.log(changeDate(start))
+    </script>
+</body>
+</html>
