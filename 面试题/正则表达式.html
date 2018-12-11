@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>正则表达式</title>
+</head>
+
+<body>
+	<script>
+		//正则表达式校验电话号码
+		let re = /^13(1|9)[0-9]{8}$/; //正确答案
+		console.log(re.test('13955848585'))
+
+	</script>
+	<script>
+		{
+			var t = "teacher";
+			let s = "student";
+        }
+        /* t正常输出 teacher，s输出 Uncaught ReferenceError: s is not defined */
+		/* console.log(t);
+		console.log(s); */
+    </script>
+    <script>
+    /* http状态码：
+    200：请求成功
+    400：请求无效，说明请求没有进入到后台服务里。要么参数不一致，要么参数类型不一致
+    500：后台报错 */
+    </script>
+    <script>
+    let val1 = '10' + 1;
+    let val2 = '10'-1;
+    let ting=1,shi=3,wei=2;
+    console.log(val1);
+    console.log(val2);
+    console.log(`${ting}厅${shi}室${wei}卫`);
+    </script>
+    <script>
+        let obj = {name:'hmm',age:'20'}
+    let {name:n,age:a} = obj;
+    console.log(n,a)
+    </script>
+    <script>
+    // HTTP协议默认的端口号是 80，HTTPS协议默认的端口号是443
+    </script>
+</body>
+
+</html>
