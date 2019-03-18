@@ -50,7 +50,8 @@
 8. 如何注册一个全局前置守卫？to，from,next 三个参数分别解释下？next的三种调用参数说明下？
     + router.beforeEach((to,from,next) => {})
     + to:Route(即将要进入的目标路由对象)  from:Route(正要离开的目标路由对象)   next:Function(调用此方法，resolve钩子，必须调用)  
-    + next()进行管道中的下一个参数  next(false) 中断当前导航  next('/')或next({path:'/'}) 当前的导航被中断，并且跳转到不同的地址。next(error) 传入的如果是个Error实例。导航会终止且错误会被传给router.onError()注册过的回调
+    + next()进行管道中的下一个参数  next(false) 中断当前导航  next('/')或next({path:'/'}) 当前的导航被中断，并且跳转到不同的地址。next(error) 传入的如果是个Error实例。导航会终止且错误会被传给router.onError()注册过的回调  
+	-tips:路由对象是什么？当前路由的状态信息（包括 URL 解析得到的信息，URL 匹配到的路由记录）。在组件内，就是this.$route。通过watch监听。不可变，每次成功的导航后都会产生一个新的对象。路由对象有许多属性可用，如this.$route.path,this.$route.params等，详见文档 [路由对象](https://router.vuejs.org/zh/api/#%E8%B7%AF%E7%94%B1%E5%AF%B9%E8%B1%A1)
 9. 如何注册全局后置钩子？这些够自己会改变导航本身吗？
     + router.afterEach((to,from) =>{})
     + 不会
