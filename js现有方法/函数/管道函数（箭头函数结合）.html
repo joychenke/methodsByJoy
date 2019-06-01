@@ -16,18 +16,20 @@
 
     /* pipeline函数的读法：
     1，第一个箭头左边，(...funcs),右边 val => funcs.reduce((a,b) => b(a),val)
-    2，(...funcs)是[plus1,mult2],所以，第一个箭头拆掉之后是
+    2，参数经过(...funcs)处理后，得到funcs是[plus1,mult2],所以，第一个箭头拆掉之后是
         val => [plus1,mult2].reduce((a,b) => b(a),val)
     3,val是5，第二个箭头拆掉之后是 [plus1,mult2].reduce((a,b) => b(a),5) 
     4,通过解析reduce函数，得到12
     */
     /* 前一个函数的输出是后一个函数的输入 */
     const pipeline = (...funcs) => val => funcs.reduce((a,b) => b(a),val);
-    const plus1 = a => a+1;
+    const plus1 = a => a+2;
     const mult2 = b => b*2;
     const addThenMult = pipeline(plus1,mult2);
 
     let res = [plus1,mult2].reduce((pre,cur) => cur(pre),5);
+    console.log(addThenMult) //直接这样打印，得到的是 val => funcs.reduce((a,b) => b(a),val)
+    
     </script>    
 </body>
 </html>
