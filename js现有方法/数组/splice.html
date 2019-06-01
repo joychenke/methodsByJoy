@@ -19,16 +19,20 @@
             item1,...,itemX ：非必填。要添加到数组新元素。
             返回值：被删除元素的数组
 		*/
+        /* 应用场景： 新增或者删除表格行
+        在index行后面，插入新的行row，array.splice(index, 1，row) 
+        将index行删除arr.splice（index,1)
+         */
 
 	</script>
 	
 	<script>
 		//删除数组中的指定元素
         let arr = ['orange','apple','mango','tomatto'];
-        let index = arr.indexOf('apple');
-        let arr1 = arr.splice(index,1);//["apple"]
-        console.log(arr);//  ["orange", "mango", "tomatto"]
-
+        arr.splice(2,1)// 删除index为2的项
+        console.log(arr);//  ["orange", "apple", "tomatto"]
+        arr.splice(1,1,"rice");
+        console.log(arr)
 	</script>
 </body>
 

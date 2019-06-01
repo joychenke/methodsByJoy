@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>给一个按钮绑定2个事件</title>
+</head>
+<body>
+    <script>
+    function fn1(){
+        alert(1);
+    }
+    function fn2(){
+        alert(2);
+    }
+    function bind(obj,evname,fn){
+        if(obj.addEventListener){
+            obj.addEventListener(evname,fn,false);
+        }else{
+            obj.attachEvent('on'+evname,function(){
+                fn.call(obj);
+            })
+        }
+    }
+    bind(document,'click',fn1);
+    bind(document,'click',fn2);
+    </script>
+</body>
+</html>

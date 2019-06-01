@@ -1,23 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>reduce函数</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>reduce函数</title>
 </head>
+
 <body>
-    <script>
-    /* 描述：为数组中每个元素依次执行回调,有两个参数，一个callback，一个initialValue。
+	<script>
+		/* 描述：为数组中每个元素依次执行回调,有两个参数，一个callback，一个initialValue。
     arr.reduce(callback,initialValue)
     1，callback：必须，回调函数，含4个参数，依次是：previousValue，currentValue，index，array
     2,initialValue：非必须，第一次调用callback时，初始值
     3，initialValue如果不填，previousValue是数组第一个值，currentValue是数组第二个值；如果填，previousValue是initialValue，currentValue是数组第一个值*/
-    var total = [2,2,3,4].reduce((p,c,i,a) => p*c);//48
-    var total2 = ['a','b','c'].reduce(function(p,c,i,a){
-        console.log(i,a);
-        return p+'-'+c;
-    },'cc');//cc-a-b-c
-    </script>
+		var total = [2, 2, 3, 4].reduce((p, c, i, a) => p * c); //48
+		var total2 = ['a', 'b', 'c'].reduce(function (p, c, i, a) {
+			console.log(i, a);
+			return p + '-' + c;
+		}, 'cc'); //cc-a-b-c
+
+		/* 用reduce和concat来实现数组的flat方法 */
+		let arr = [1, 2, [3, 4, [5, 6, [7, 8]]]]
+		// 展开一层
+		let result = arr.reduce((res, cur) => res.concat(cur), []);
+		console.log(result);
+		// 展开所有层
+		function deep(arr) {
+			return arr.reduce((res, cur) => Array.isArray(cur) ? res.concat(deep(cur)) : res.concat(cur), []);
+		}
+		console.log(deep(arr)); // [1, 2, 3, 4, 5, 6, 7, 8]
+		// 展开任意层（方法一）：这种方法性能差，取的深度是几，arr就要从头到尾遍历几次（reduce执行一次就是遍历一次）
+		function deepAmount(arr, amount) {
+			if (typeof amount !== "number") {
+				console.log("展开的深度必须填数字！");
+				return arr;
+			}
+			for (amount; amount > 0; amount--) {
+				arr = arr.reduce((res, cur) => res.concat(cur), []);
+			}
+			return arr;
+		}
+
+		// 展开任意层（方法 2）：性能更优，arr里非数组的元素，只用遍历一次
+		function deepAmount2(arr, amount) {
+			if (typeof amount !== "number") {
+				console.log("展开的深度必须填数字！");
+				return arr;
+			}
+			return arr.reduce((res, cur) => {
+				if (amount < 1) {
+					return res;
+				}
+				// 只展开第一层or不是数组，直接压入结果
+				if (amount === 1 || !Array.isArray(cur)) {
+					return res.concat(cur);
+				}
+				// 展开多层，递归计算
+				amount--;
+				return res.concat(deepAmount2(cur, amount))
+			}, []);
+		}
+		let arr2 = [1, 2, [3, 4, [5, 6, [7, 8]]], 9, 10, 11, 12]
+		console.log(deepAmount2(arr2, 'ss'))
+		console.log(deepAmount2(arr2, 1))
+		console.log(deepAmount2(arr2, 2))
+		console.log(deepAmount2(arr2, 3))
+
+		let tips0 = "reduce的几种特殊情况"
+		console.log(`%c${tips0}`, "font-size: 20px; color: orange;");
+		// arr是空， init是空，reduce报错
+		let emptyList = [];
+		/* let val = emptyList.reduce((init) => {
+		  
+		}) */
+		// arr是空，init不是空，然后init
+		let val2 = emptyList.reduce((init, cur) => {
+			console.log(init)
+		}, 8)
+		console.log(val2)
+		// arr长度是1， init是空
+		let notEmptyList = [56]
+		let val3 = notEmptyList.reduce((init, cur) => {
+			console.log(init)
+		})
+		console.log(val3)
+
+		console.log(`%c按属性对obj进行分类`, "font-size: 20px; color: red;");
+		// 按属性对obj进行分类
+		var people = [{
+				name: 'Alice',
+				age: 21
+			},
+			{
+				name: 'Max',
+				age: 20
+			},
+			{
+				name: 'Jane',
+				age: 20
+			},
+			{
+				name: 'Jane',
+				age1: 20
+			},
+		];
+		let groupBy = (objectArr, property) => {
+			return objectArr.reduce((result, curObj) => {
+				let resPro = curObj[property] || "";
+				if (!resPro) {
+					console.log(result)
+					result[`no`] = !result[`no`] ? [].concat(curObj) : result[`no`].push(curObj)
+					return result
+				}
+				if (!result[resPro]) {
+					result[resPro] = [].concat(curObj)
+					return result;
+				}
+				result[resPro].push(curObj)
+				return result
+			}, {})
+		}
+		console.log(groupBy(people, "age"))
+
+		// 使用扩展运算符获取对象数组中的元素
+		var friends = [{
+			name: 'Anna',
+			books: ['Bible', 'Harry Potter'],
+			age: 21
+		}, {
+			name: 'Bob',
+			books: ['War and peace', 'Romeo and Juliet'],
+			age: 26
+		}, {
+			name: 'Alice',
+			books: ['The Lord of the Rings', 'The Shining'],
+			age: 18
+		}];
+		// 获取book list
+		let allbooks = friends.reduce((books, cur) => {
+			return [...books, ...cur.books]
+		}, [])
+		console.log(allbooks)
+
+		console.log(`%c数组去重`, "font-size: 20px; color: red;");
+		let depulicateArr = [1, 2, 1, 2, 3, 5, 4, 5, 3, 4, 4, 4, 4];
+		// 自己写的方法
+		let newArr = depulicateArr.reduce((newArr, cur) => {
+			!newArr.includes(cur) && newArr.push(cur)
+			return newArr
+		}, [])
+		console.log(newArr)
+		// 例子方法
+		let notDepulicate = depulicateArr.sort().reduce((newArr, cur) => {
+			if (!newArr.length || newArr[newArr.length - 1] !== cur) {
+				newArr.push(cur)
+			}
+			return newArr;
+		}, [])
+		console.log(notDepulicate)
+
+		console.log(`%c多个promise~~`, "font-size: 20px; color: red;");
+
+		function runPromiseInSequence(arr, input) {
+			return arr.reduce(
+				(promiseChain, currentFunction) => promiseChain.then(currentFunction),
+				/* // 第一次执行时：
+				Promise.resolve(input).then( a => Promise.resolve(a * 5)) // return  Promise.resolve(50)
+				// 第二次执行时：
+				Promise.resolve(50).then(a => Promise.resolve(a * 2)) // return  Promise.resolve(100)
+				// 第三次执行时：
+				Promise.resolve(100).then(a => a * 3) // return  Promise.resolve(300)
+				// 第四次执行时：
+				Promise.resolve(200).then(a => Promise.resolve(a * 4))  //return  Promise.resolve(1200) */
+				Promise.resolve(input) // reduce的第二个参数，是initValue
+			);
+		}
+
+		// promise function 1
+		function p1(a) {
+			return new Promise((resolve, reject) => {
+				console.log(resolve(a * 5))
+				resolve(a * 5);
+			});
+		}
+
+		// promise function 2
+		function p2(a) {
+			return new Promise((resolve, reject) => {
+				console.log(resolve(a * 2))
+				resolve(a * 2);
+			});
+		}
+
+		// function 3  - will be wrapped in a resolved promise by .then()
+		function f3(a) {
+			console.log(a * 3)
+			return a * 3;
+		}
+
+		// promise function 4
+		function p4(a) {
+			return new Promise((resolve, reject) => {
+				console.log(resolve(a * 5))
+				resolve(a * 5);
+			});
+		}
+
+		const promiseArr = [p1, p2, f3, p4];
+		runPromiseInSequence(promiseArr, 10)
+			.then(res => {
+				console.log(11111);
+				console.log(res)
+			}); // 1200
+
+    console.log(`%c多个函数的管道`, "font-size: 20px; color: red;");    
+		// Building-blocks to use for composition
+		const double = x => x + x;
+		const triple = x => 3 * x;
+		const quadruple = x => 4 * x;
+
+		// Function composition enabling pipe functionality
+		const pipe = (...functions) => input => functions.reduce(
+			(acc, fn) => fn(acc),
+			input
+		);
+
+    // Composed functions for multiplication of specific values
+    // multiply6到multiply24分别是函数，console.log出来可以看到
+		const multiply6 = pipe(double, triple);
+		const multiply9 = pipe(triple, triple);
+		const multiply16 = pipe(quadruple, quadruple);
+		const multiply24 = pipe(double, triple, quadruple);
+
+		// Usage
+		multiply6(6); // 36
+    let res = 	multiply9(9); // 81
+		multiply16(16); // 256
+    console.log(res); // 240
+    
+    /* // multiply6:
+    // 管道函数的读法就是从左到右逐一拆分箭头，直到拆分只剩最后一个箭头
+    const pipe = (...functions) => input => functions.reduce(
+			(acc, fn) => fn(acc),
+			input
+    );
+    // 拆第一个箭头
+    pipe(double, triple) = input => [double, triple].reduce( (acc, fn) => fn(acc), input)
+    // 拆第二个的时候，会发现缺少input，说明multiply6还要有个传参
+    multiply6(input) = input => [double,triple].reduce((acc,fn) => fn(acc), input)
+    // 拆第二个
+    [double,triple].reduce((acc,fn) => fn(acc), input)
+    // 以上是最基础的reduce数组 */
+
+	</script>
 </body>
+
 </html>

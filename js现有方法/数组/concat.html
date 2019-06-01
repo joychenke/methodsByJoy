@@ -18,6 +18,29 @@
     //2，连接数组
     let arr2 = arr.concat(['b','a'],2,[6,7]); //[11, 2, "b", "a", 2, 6, 7]
     let arr3 = [].concat(arr1,arr2,arr);// [11, 2, 41, 5, "a", 11, 2, "b", "a", 2, 6, 7, 11, 2]
+    //3, 连接时，是浅拷贝
+    let list = [{a:1,b:2}];
+    let list1 = ['s'];
+    let list2 = list.concat({c:3},list1);
+    console.log(list2) // [{a:1,b:2}, {c:3}, 's']
+    list[0].a = 2;
+    list1.push("e");
+    console.log(list2)// [{a:2,b:2}, {c:3}, 's']
+    // 4,和扩展运算符的比较:扩展运算符也是浅拷贝.如果拷贝的是嵌套数组，那么拷贝的是数组或对象的引用。如果引用的对象被修改，则新的结果数组和原始数组都被修改了。
+    console.log(list1)
+    let listR = [...list,...list1]
+    console.log(listR)
+    console.log(list)
+    list[0].a = 3;
+    list1[0] = "f"
+    console.log(list1)
+    console.log(listR)
+    console.log(list)
+
+    let listArr = {a: 1};
+    console.log(Array.of(listArr,true))
+    listArr.a = 2;
+    console.log(Array.of(listArr,true)) // [{a: 2}, true]
     </script>
 </body>
 </html>
