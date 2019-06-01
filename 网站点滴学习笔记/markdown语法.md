@@ -7,3 +7,6 @@
     1. 下载pandoc进行安装
     2. 在cmd中打开.md文件所在的目录
     3. 一行代码 `pandoc 3-router学习.md -o mytest.docx`
++ tips:  
+	文字换行：在需要换行的前面按2下空格键，然后再敲回车
+	
