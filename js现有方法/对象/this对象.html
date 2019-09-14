@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>this对象</title>
+</head>
+
+<body>
+	<script>
+		// 首先，this是一个对象
+		/* 
+		bind可以设置this值
+		this值：当前执行代码的环境对象
+		无论是否是严格模式下，全局执行时，this指向全局对象，浏览器中的全局对象是window
+
+		函数内：取决于被调用的方式
+		  简单调用： 分非严格模式和严格模式。非严格模式下，全局对象； 严格模式下，是undefined
+		 */
+		/* 
+		this的值从一个环境对象，传到另一个环境对象，用call或者apply
+		  将一个对象作为call或者apply的第一个参数，this将会绑定到这个对象
+		  例子：
+		  whatsThis();
+		  // 将函数whatsThis函数体中的this绑定到obj上
+		  whatsThis.call(obj); 
+		  whatsThis.apply(obj);
+
+		  call的第一个参数是函数体内this将要绑定的对象，后面的参数作为参数传递给函数调用
+		  apply的第一个参数是函数体内this将要绑定的对象，第二个参数是数组，是给函数用的参数
+
+		  使用call和apply时，如果传的第一个参数不是对象，那么JavaScript会用构造函数，将其转化为对象。所以引申出了Object.prototype.toString.call(param) 精确得到param的数据类型。
+		    精髓是2点：
+		    1，param不管是什么，作为call和apply的参数，param都会被转化为对象  
+		    2，toString会将上一步的对象转化为字符串，
+		    综合以上两点，最终得到的一个字符串，类似这种 "[object Array]"，截取字符串，就能得到准确类型
+		 */
+
+		/* bind方法 */
+		/* 用f.bind(someObj) 将会创建一个和f具有相同函数体和作用域的新函数。在新函数中，this永久绑定为someObj
+		  精髓是：
+		  bind只要用了一次，新函数中的this将被永久绑定，后面无论再怎么用call，apply，bind都不能改变this。看下面例子
+		 */
+		function f() {
+			return this.a;
+		}
+		let someObj = {
+			a: "kk is nice!"
+		}
+		// g中的this是通过bind绑定的
+		let g = f.bind(someObj)
+		console.log(g()) // "kk is nice!"
+
+		let h = g.bind({
+			a: "cc is nice!"
+		})
+		console.log(h()) // "kk is nice!"
+
+		let o = {
+			a: 37,
+			f: f,
+			g: g,
+			h: h
+		}
+		// f的this没变，g的this是通过bind方法绑定的someObj，因为g中this之前bind过，再bind时不会生效，因此h的this还是someObj
+		console.log(o.f(), o.g(), o.h()) // 37 "kk is nice!" "kk is nice!"
+		// g中的this是bind方法绑定的,call方法也不会生效
+		let k = g.call({
+			a: "函数g 用call 方法！"
+		});
+		// f的this是正常情况下的this，call方法会生效
+		let k1 = f.call({
+			a: "函数f 用call方法！"
+		});
+		console.log(k); // "kk is nice!"
+		console.log(k1); // "函数f 用call方法！"
+
+		/* 箭头函数
+		1，全局代码中，this是全局对象
+		2，函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象（这的对象，也可以换2种说法，叫作用域，或者函数 ）
+		 */
+		function foo() {
+			setTimeout(() => {
+				console.log('id:', this.id);
+			}, 100);
+		}
+
+		var id = 21;
+
+		foo.call({
+			id: 42
+		});
+    var s3 = 12;
+		function Timer() {
+			this.s1 = 0;
+			this.s2 = 0;
+			// 箭头函数
+			setInterval(() => this.s1++, 1000);
+			// 普通函数
+			setInterval(function () {
+				this.s3++;
+			}, 1000);
+		}
+    
+
+		var timer = new Timer();
+
+		setTimeout(() => console.log('s1: ', timer.s1), 3100);
+		setTimeout(() => console.log('s2: ', timer.s2, s3), 3100);
+
+	</script>
+</body>
+
+</html>
