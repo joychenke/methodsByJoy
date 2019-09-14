@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>jquery的extend方法</title>
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+  <script>
+  // extends
+  let object1 = {
+        apple: 0,
+        banana: {weight: 52, price: 100},
+        cherry: 97
+    };
+    let object2 = {
+        banana: {price: 200, item:["green", "yellow"]},
+        durian: 100
+    };
+    //$.extend( object1, object2)
+    /* $.extend(true, object1, object2)
+    object2.banana.price = 0
+    object2.banana.item.push("red")
+    console.log(object1)
+    console.log(res) */
+    /* 
+    加了true之后，无论object2中属性如何变，object1都不会变了
+    $.extend(true, obj1, obj2) 是将obj2中的属性*深拷贝*到obj1
+    */
+    Object.assign(object1, object2)
+    object2.durian = 230
+    // object2.banana.item.push("red")
+    console.log(object1)
+    /* Object.assign（obj1，obj2）是浅拷贝，将obj2属性的值赋给obj1 */
+
+    let arr = [1,2,3,{name: "chenke"}]
+    let arr1 = [...arr]
+    arr[3].name = "kk"
+    console.log(arr1)
+    /* 修改对象属性的值，arr1也会跟着变。因此扩展运算符也是浅拷贝 */
+  </script>
+</body>
+</html>
