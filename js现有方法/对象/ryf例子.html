@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>草稿</title>
+</head>
+
+<body>
+	<script>
+    class Foo{
+      height = "172cm"
+      static addr = "洪山"// 对象的属性，实例不能访问
+      constructor(){
+        this.name = "kk"
+        this.age = 30
+      }
+    }
+    Foo.prop = 1
+    let instance = new Foo()
+
+    /* 将私有方法写到类的外面 */
+    class Widget{
+      foo(baz){
+        bar.call(this, baz)
+      }
+    }
+    function bar(baz){
+      return this.snaf = baz;
+    }
+    let widgetInst = new Widget()
+
+    /* 利用Symbol值的唯一性 */
+    const bar1 = Symbol("bar")
+    const sanf1 = Symbol("snaf")
+
+    class myClass{
+      foo(baz){
+        this[bar1](baz)
+      }
+      [bar1](baz){
+        return this[sanf1] = baz;
+      }
+    }
+    let childClass = new myClass()
+
+	</script>
+</body>
+
+</html>
