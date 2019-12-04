@@ -254,6 +254,39 @@
     [double,triple].reduce((acc,fn) => fn(acc), input)
     // 以上是最基础的reduce数组 */
 
+    let target = {a: 2, b: 4, e: 6, d: 5}
+    // 将对象排序：先让数组有序，再让对象有序
+    let list = Object.entries(target).sort((a,b) => {
+      return a[1] > b[1] ? 1 : -1;
+    })
+    let result = list.reduce((obj, value) => {
+      obj[value[0]] = value[1]
+      return obj
+    }, {})
+
+    let arr1 = [1, 2, 3]
+    let arr2 = ["a", "b", "c"]
+    let obj = Object.assign([], arr1, arr2, {a: 1})
+
+    let obj = {a: 1, b: 2, c: 3}
+    Object.assign(obj, {d: 4, e: 5})
+    delete obj.a
+
+    function Animal(name, age){
+      this.name = name
+      this.age = age
+    }
+    Object.assign(Animal.prototype, {
+      getName(){
+        return this.name
+      },
+      getAge(){
+        return this.age
+      }
+    })
+    let dog = new Animal("lily", 10)
+    
+
 	</script>
 </body>
 

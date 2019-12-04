@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>对象test</title>
+</head>
+
+<body>
+	<script>
+		let {
+			keys,
+			values,
+			entries
+		} = Object;
+		let obj12Two = {
+			a: 51,
+			b: 2,
+			c: 31
+		};
+
+		//Object.keys()返回[1, 2, 3]
+		for (let key of keys(obj12Two)) {
+			console.log(key);
+		}
+
+	</script>
+</body>
+
+</html>
