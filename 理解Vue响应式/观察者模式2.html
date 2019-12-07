@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>观察者模式</title>
+</head>
+
+<body>
+	<script>
+		var Event = function () {
+			this.subs = {};
+		}
+
+		//添加收听者：
+		Event.prototype.addSubscriber = function (k, callback) {
+			if (!this.subs[k]) {
+				this.subs[k] = [];
+			}
+			this.subs[k].push(callback);
+		};
+		//发布事件：
+		Event.prototype.publish = function (k, item) {
+      var fns = this.subs[k];
+      //防止发布给不存在的对象
+      if(!fns){
+        console.log(`没找到名字为${k}的函数！`);
+        return
+      }
+      fns.forEach(fn => {
+        fn(item)
+      })
+		}
+
+		function reader(item) {
+			console.log(item);
+			console.log('我是收听的');
+    }
+    function write(content){
+      console.log(`我是publish的内容：${content}`)
+    }
+
+		var event = new Event();
+		event.addSubscriber('a', reader)
+		event.addSubscriber('a', write)
+		event.publish('a', 'oh，a的publish');
+		event.publish('b', 'publish发布信息,b 啊');
+
+    /* 
+    实现思路：
+    定义一个构造函数Event，Event里定义添加订阅者addSubscriber和发布消息publish的方法
+    实例event也有addSubscriber和publish。
+    订阅者作为函数，是addSubscriber的第二个参数，第一个参数是订阅者对应的名称（or分组？）
+    发布方法中，第一个是名称，第二个参数是发布的内容
+    与观察者模式比较：
+    make方法其实就是给blogger添加发布者响应的方法。此处巧妙用构造函数。构造函数生成的实例，就自带构造函数的方法。
+    给每个订阅者都具名，每次publish，可以批量发布同一名称的订阅。而之前，每次只能发布所有的订阅。
+    */
+	</script>
+</body>
+
+</html>

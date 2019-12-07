@@ -51,6 +51,12 @@
         }
     };
 
+    var another_blog = {
+      castSth(){
+        this.publish("我来自another_blog")
+      } 
+    }
+
     function joyRead(what){
       console.log("joy订阅了：", what)
     }
@@ -58,18 +64,20 @@
     //blogger变为发布者    
     // tip : 将 addSubscriber removeSubscriber publish方法都绑定到blogger身上
     observer.make(blogger);
-    console.log(blogger)
+    observer.make(another_blog)
     //jack和joy订阅blogger
     blogger.addSubscriber(jack.read);
     blogger.addSubscriber(joyRead);
+    another_blog.addSubscriber(jack.read)
 
     //blogger发布信息
     blogger.writeBlogPost();
-
+    another_blog.castSth()
     //输出：
     /* 
     jack订阅: 一条新消息 
     joy订阅: 一条新消息 
+    jack订阅: 我来自another_blog
     */
     
     /* 
@@ -77,6 +85,13 @@
     发布者、订阅者的初始化，发布订阅消息的方法，都在observer里。
     发布者承担：添加订阅者、移除订阅者、发布消息的任务。
     订阅者：只是一个函数，在发布者发布消息时执行。
+
+    关键数据： subscribers，用来存放新增的订阅者  删除订阅者时，删除subscribers里的项  发布消息时，调用subscribers里存的函数
+
+    tips:
+    不同对象可以成为发布者
+    一个发布者可以添加任意个函数作为订阅者
+    一个订阅者也可以添加任意个发布者
     */
   </script>
 </body>
