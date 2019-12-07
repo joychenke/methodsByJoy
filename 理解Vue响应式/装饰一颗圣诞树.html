@@ -21,6 +21,8 @@
       // tip : 每次 tree === this 的结果都是true， this：谁调用就指向谁 
       // tip : tree[deco]有prototype，是构造函数；tree[deco]的实例继承了tree对象的所有方法，和tree在一个原型链上
       // tip : 注意，这里同一原型链上的tree不是特指14行的tree，而是上下文中的“tree”，谁调用了bindDecorator，这个“tree”就是谁
+      // 本例子中最核心的一行代码： tree和this都是调用bindDecorator的对象，等价
+      console.log(this === tree); // true
 			tree[deco].prototype = this;
 			return new tree[deco];
 		};
@@ -111,7 +113,13 @@
 		                                                    |
 		                                             tree['Red'].prototype//tree={decorate: ƒ, name: "Red"} // bindDecorator("Red")后tree的值    
 		*/
-
+    // tip : 装饰器的目标是，普通对象（tree）的普通方法（decorate），调用后（tree.decorate()），可以不仅执行最开始的tree的decorate方法 ，也执行通过装饰器绑定的方法（同时打印blue，angle，red）。
+    /* 步骤是：
+    1，普通对象tree，给它加方法，比如本例的decorate
+    2，给对象tree绑定装饰器方法（bindDecorator），在装饰器内部，修改后面定义的构造函数的原型，使其指向tree，返回构造函数的实例
+    3，在第2步提到的构造函数中，定义一个同名的方法decorate，方法内，先调用原型链上的decorate方法，然后写自己希望在当前装饰器中注入的内容
+    4，给tree对象绑定装饰器，赋值给tree，按需绑定不同装饰器
+    5, 上一步完成后，tree就是一个新的对象，并且新对象和第一步的tree对象完全不同，tree的最外层是最后一次绑定的装饰器，原型链上依次分布着上几步添加的装饰器，原型链的倒数第二层包含第一步定义的tree对象的属性。可结合上面的继承关系的图解看看*/
 	</script>
 </body>
 
