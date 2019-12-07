@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>给对象动态添加职责</title>
+</head>
+<body>
+  div
+  <script>
+    // 给Function构造函数加fn方法，调用fn方法时，函数自己和fn的都会执行
+    Function.prototype.fn = function (fa) {
+      let self = this;
+      return function () {
+        self.apply(this, arguments)
+        fa.apply(this, arguments)
+      }
+    }
+    function a(){
+      console.log("我是函数a")
+    }
+    let copyA = a.fn(function () {
+      console.log("我是函数额外的功能！")
+    })   
+    // copyA是 14-18行的函数（假设叫fb），copyA()相当于函数自调用，此时fb里面的this是window对象
+    copyA();
+  </script>
+  <script>
+  // 监听数组的变化
+  var methods = ["push", "pop", "shift", "unshift", "splice", "slice", "sort", "reverse"]
+  let Method = {}
+  methods.forEach(method => {
+    (function (method) {
+      let original = Array.prototype[method]
+      Method[method] = function(){
+        console.log("监听数组变化和操作函数~~~");
+        return original.apply(this, arguments)
+      }
+    })(method)
+  })
+  var list = ["a", "b", "c"]
+  list.__proto__ = Method
+  list.push("d")
+  </script>
+</body>
+</html>

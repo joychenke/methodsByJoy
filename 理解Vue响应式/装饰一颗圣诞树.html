@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>装饰一颗圣诞树</title>
+</head>
+
+<body>
+	<script>
+		//装饰一颗圣诞树
+		var tree = {};
+		tree.decorate = function () {
+			console.log('tree');
+		}
+
+		/*接着，再定义 bindDecorator()方法，该方法用于添加额外的装饰器。装饰器被实现为构造器函数，都继承自 tree 对象。*/
+		tree.bindDecorator = function (deco) {
+      // tip : 每次 tree === this 的结果都是true， this：谁调用就指向谁 
+      // tip : tree[deco]有prototype，是构造函数；tree[deco]的实例继承了tree对象的所有方法，和tree在一个原型链上
+      // tip : 注意，这里同一原型链上的tree不是特指14行的tree，而是上下文中的“tree”，谁调用了bindDecorator，这个“tree”就是谁
+			tree[deco].prototype = this;
+			return new tree[deco];
+		};
+    // 里面的this都是指向外层的tree['Blue']实例
+    tree.Blue = function () {
+			this.decorate = function () {
+        // tip : tree.Blue.prototype 是在bindDecorator("Blue")之前的tree，即初始tree
+        console.log(this.Blue.prototype === tree.Blue.prototype)
+        //tree['Blue']的原型是tree，所以打印出"tree"
+				this.Blue.prototype.decorate();				
+				console.log('blue');
+			}
+			this.name = 'blue';
+		}
+		tree.Angel = function () {      
+			this.decorate = function () {
+        this.Angel.prototype.decorate();
+        // tip : tree.Angel.prototype 里的tree是 经过一次 bindDecorator("Blue") 后得到的tree
+				// console.log(this.Angel.prototype);
+				console.log('angle');
+			}
+			this.name = 'angel';
+    }
+    
+		/*下面来创建3个装饰器，我们将它设为 tree 的一个属性（以保持全局命名空间的纯净）。 以下对象也提供了 decorate()方法，注意它先调用了父类的decorate()方法。*/
+    // tip : 由上面bindDecorator定义的地方，tree.Red是构造函数
+		tree.Red = function () {
+			this.decorate = function () {
+        // tip : console.log(this === _this) true  => decorate方法是this调用的，里面的this和外面的this，指向的是同一个对象。外面的this指向的是tree.Red实例
+        // tip : 实例上只有decorate方法和name属性，没有Red，会继续往它的原型链上找，所以，接着找实例的原型对象。由上文 tree[deco].prototype = this 得到 tree.Red的prototype是对象tree，tree有Red方法。this.Red调用的就是tree.Red  所以 this.Red === tree.Red =》true
+        console.log(this.Red.prototype === tree.Red.prototype) // true
+        // tip : 由上文tree.Red和tree是在一个原型链上
+				this.Red.prototype.decorate();
+				console.log('red');
+			};
+			this.name = 'red';
+    }
+    
+    /*把所有的装饰器都添加到基础对象中：*/
+    // tip : bindDecorator返回的是构造函数的实例
+    console.log(tree);
+    tree = tree.bindDecorator('Blue');
+    console.log(tree);    
+    tree = tree.bindDecorator('Angel');
+    console.log(tree);
+    tree = tree.bindDecorator('Red');
+    console.log(tree);
+
+
+    /*运行：*/
+		tree.decorate();
+		//tree
+		//blue
+		//angle
+		//red
+
+		/*解析：
+    1、执行tree = tree.bindDecorator('Blue')：
+        tree['Blue'].prototype = tree;
+        tree = {decorate: ƒ, name: "blue"}
+        即tree['Blue']赋值给tree，tree['Blue']的原型指向tree
+    输出:
+    "tree"
+    "blue"
+
+    2、执行tree = tree.bindDecorator('Angel')：
+        tree['Angel'].prototype = tree['Blue'],(这时候tree已经赋值为tree['Blue'])
+        tree = {decorate: ƒ, name: "Angle"}
+        即tree['Angel']赋值给tree，tree['Angel']的原型指向tree['Blue']
+    输出：
+    "angel"
+
+    3、执行tree = tree.bindDecorator('Red')：
+        tree['Red'].prototype = tree['Angel'],(这时候tree已经赋值为tree['Angel'])
+        tree = {decorate: ƒ, name: "Red"}
+        即tree['Red']赋值给tree，tree['Red']的原型指向tree['Angel']
+    输出：
+    "red"
+*/
+
+		/*
+		图解：从下往上依次继承
+		tree = {decorate:fn,bindDecorator:fn}   // tree的初始值
+		                |
+		 tree['Blue'].prototype//tree={decorate: ƒ, name: "blue"}     // 经过bindDecorator("Blue")后，tree的值
+		                                |
+		                    tree['Angel'].prototype//tree={decorate: ƒ, name: "Angle"} // bindDecorator("Angel")的值
+		                                                    |
+		                                             tree['Red'].prototype//tree={decorate: ƒ, name: "Red"} // bindDecorator("Red")后tree的值    
+		*/
+
+	</script>
+</body>
+
+</html>
