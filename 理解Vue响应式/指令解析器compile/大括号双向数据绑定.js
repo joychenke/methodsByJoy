@@ -53,6 +53,9 @@ Compile.prototype = {
   },
   //初始化视图updateText和生成订阅器:
   compileText: function (node, exp) {
+    // tip : 开始的时候 node => "初始化的name" exp => "name"
+    console.log(node);
+    console.log(exp);
     var self = this;
     var initText = this.vm[exp];   //代理访问self_vue.data.name1 -> self_vue.name1
     this.updateText(node, initText);//将初始化的数据初始化到视图中
