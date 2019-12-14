@@ -26,9 +26,13 @@ Compile.prototype = {
   },
   //创建代码片段
   nodeToFragment: function (el) {
+    // tip : fragment是一个指向 DocumentFragment（文档片段）对象的引用
+    // tip : 文档片段的使用场景是： 创建文档片段 =》元素附加到文档片段 =》文档片段附加到DOM树   这样使用是为了更好的性能
+    // tip : 珂珂的理解，文档片段相当于一个暂存的容器
     var fragment = document.createDocumentFragment();
     var child = el.firstChild;
     while (child) {//将DOM元素移入fragment
+      console.log(child);
       fragment.appendChild(child);
       child = el.firstChild;
     }
@@ -37,17 +41,17 @@ Compile.prototype = {
   //对所有子节点进行判断，1.初始化视图数据,2.绑定更新函数的订阅器
   compileElement: function (el) {
     var childNodes = el.childNodes;
-    var self = this;
-    [].slice.call(childNodes).forEach(function (node) {
+    // tip : childNodes是类数组
+    [].slice.call(childNodes).forEach( (node) => {
+      // tip : .*  任意一个字符，任意多次
       var reg = /\{\{(.*)\}\}/;//匹配" {{}} "
       var text = node.textContent;
-
-      if (self.isTextNode(node) && reg.test(text)) {//判断" {{}} "
-        self.compileText(node, reg.exec(text)[1]);
+      if (this.isTextNode(node) && reg.test(text)) {//判断" {{}} "
+        this.compileText(node, reg.exec(text)[1]);
       }
 
       if (node.childNodes && node.childNodes.length) {
-        self.compileElement(node);//// 继续递归遍历子节点
+        this.compileElement(node);//// 继续递归遍历子节点
       }
     });
   },
@@ -56,11 +60,10 @@ Compile.prototype = {
     // tip : 开始的时候 node => "初始化的name" exp => "name"
     console.log(node);
     console.log(exp);
-    var self = this;
     var initText = this.vm[exp];   //代理访问self_vue.data.name1 -> self_vue.name1
     this.updateText(node, initText);//将初始化的数据初始化到视图中
-    new Watcher(this.vm, exp, function (value) {//{}，name, // 生成订阅器并绑定更新函数
-      self.updateText(node, value);
+    new Watcher(this.vm, exp,  (value) => {//{}，name, // 生成订阅器并绑定更新函数
+    this.updateText(node, value);
     })
   },
   updateText: function (node, value) {
