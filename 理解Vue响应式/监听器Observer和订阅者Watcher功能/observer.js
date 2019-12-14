@@ -2,6 +2,7 @@
 // tip : Observe是构造函数，有walk和defineReactive方法
 function Observe(data) {
   this.data = data;
+  console.log("Observe");
   this.walk(data);
 }
 Observe.prototype = {
@@ -23,7 +24,6 @@ Observe.prototype = {
         if (Dep.target) {
           dep.addSub(Dep.target); //在这里添加一个订阅者
         }
-        console.log('属性' + key + '执行get');
         return val;
       },
       set: function (newVal) {
@@ -32,7 +32,6 @@ Observe.prototype = {
         }
         val = newVal;
         dep.notify(); //如果数据变化，通知所有订阅者
-        console.log('属性：' + key + '以及被监听，现在值为：' + newVal.toString());
       }
     })
   }

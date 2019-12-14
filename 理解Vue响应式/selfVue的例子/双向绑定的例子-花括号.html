@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>双向绑定的例子</title>
+</head>
+<body>
+  <h1 id="name">
+    <span>我的名字是: </span>
+    {{name}}
+    <br/>
+    <span>你的名字是：</span>
+    {{yourName}}
+  </h1>
+  <script src="../监听器Observer和订阅者Watcher功能/observer.js"></script>
+  <script src="../监听器Observer和订阅者Watcher功能/watcher.js"></script>
+  <script src="../指令解析器compile/大括号双向数据绑定.js"></script>
+  <script src="../selfVue/selfVue添加了花括号绑定.js"></script>
+  <script>
+    // tip : 构造函数SelfVue传一个对象。对象包含两个元素：需要初始化的data和根目录的id
+    let self_vue = new SelfVue({
+      data: {name: "小可爱", yourName: "小宝宝"},
+      el: "#name"
+    })
+
+    setTimeout(() => {
+      // tip : 修改后的代码
+      self_vue.name = "小喵喵"
+      self_vue.yourName = "小波波"
+    }, 3000);
+  </script>
+</body>
+</html>
