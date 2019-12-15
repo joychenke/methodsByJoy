@@ -50,9 +50,9 @@ Compile.prototype = {
       var text = node.textContent;
       // tip : 
       if (this.isTextNode(node) && reg.test(text)) {//判断" {{}} "
-        let data = reg.exec(text)[1]
+        let dataPro = reg.exec(text)[1]
         // tip : node 是花括号内容 {{name}}, {{yourName}},compileText就是处理花括号内容
-        this.compileText(node, data);
+        this.compileText(node, dataPro);
       }
       if (node.childNodes && node.childNodes.length) {
         console.log(node);

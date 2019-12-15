@@ -3,7 +3,6 @@
  * @param {Object} options Vue框架初始化时的选项
  */
 function SelfVue(options) {
-  console.log(options)
   this.data = options.data;
   this.el = options.el;
   this.vm = this;
