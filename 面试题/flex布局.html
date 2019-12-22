@@ -50,43 +50,8 @@
 </head>
 
 <body>
-	<div class="content">
-		<div class="box box1">
-			<span class="item"></span>
-		</div>
-		<div class="box box2">
-			<span class="item"></span>
-			<span class="item"></span>
-		</div>
-		<div class="box" style="display:flex;justify-content: space-between;">
-			<span class="item">3</span>
-			<span class="item" style="align-self:flex-end;"></span>
-		</div>
-		<div class="box" style="display:flex;justify-content:space-between">
-			<span class="item"></span>
-			<span class="item" style="align-self: center;"></span>
-			<span class="item" style="align-self: flex-end;"></span>
-		</div>
-		<div class="box" style="display:flex;flex-wrap:wrap;justify-content: flex-end;align-content: space-between">
-			<span class="item">1</span>
-			<span class="item">2</span>
-			<span class="item">3</span>
-			<span class="item">4</span>
-		</div>
-		<div class="box" style="display:flex;flex-wrap:wrap;align-content:space-between;">
-			<div class="column" style="display:flex;flex-basis:100%;justify-content: space-between;">
-				<span class="item"></span>
-				<span class="item"></span>
-			</div>
-			<div class="column" style="display:flex;flex-basis:100%;justify-content: space-between;">
-				<span class="item"></span>
-				<span class="item"></span>
-			</div>
-		</div>
-	</div>
 	<div>
 		<div>
-			<h2>两个点</h2>
 			<p>两个点时，要把两个点当做一个整体。还是只改变外层box2的样式</p>
 		</div>
 	</div>
@@ -103,7 +68,44 @@
 			flex-wrap:如果一条轴线排不下，该如何换行。
 			s-wrap:nowrap | wrap | wrap-reverse;
 			}
-		</p>
+    </p>
+    <p>
+      flex-basis: 在分配多余空间之前，项目占据的主轴空间（main size），默认值为auto。也可以像width和height一样，设置属性为固定值。
+    </p>
+  </div>
+  <div class="content">
+		<div class="box box1">
+			<span class="item"></span>
+		</div>
+		<div class="box box2">
+			<span class="item">1</span>
+			<span class="item">2</span>
+		</div>
+		<div class="box" style="display:flex;justify-content: space-between;">
+			<span class="item">3</span>
+			<span class="item" style="align-self:flex-end;">4</span>
+		</div>
+		<div class="box" style="display:flex;justify-content:space-between">
+			<span class="item">1</span>
+			<span class="item" style="align-self: center;">2</span>
+			<span class="item" style="align-self: flex-end;">3</span>
+		</div>
+		<div class="box" style="display:flex;flex-wrap:wrap;justify-content: flex-end;align-content: space-between">
+			<span class="item">1</span>
+			<span class="item">2</span>
+			<span class="item">3</span>
+			<span class="item">4</span>
+		</div>
+		<div class="box" style="display:flex;flex-wrap:wrap;align-content:space-between;">
+			<div class="column" style="display:flex;flex-basis:100%;justify-content: space-between;">
+				<span class="item">1</span>
+				<span class="item">2</span>
+			</div>
+			<div class="column" style="display:flex;flex-basis:100%;justify-content: space-between;">
+				<span class="item">3</span>
+				<span class="item">4</span>
+			</div>
+		</div>
 	</div>
 </body>
 
