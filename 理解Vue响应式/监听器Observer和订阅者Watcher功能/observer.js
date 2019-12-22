@@ -51,7 +51,6 @@ function observers(data) {
 // Dep加一个target属性
 function Dep() {
   this.subs = [];
-  this.target = null;
 }
 Dep.prototype = {
   addSub: function (sub) { //添加订阅者

@@ -17,9 +17,9 @@
 		<button v-on:click="clickMe">v-on事件</button>
 		<h3>{{event}}</h3>
 	</div>
-	<script src="../监听器Observer和订阅者Watcher功能/observer.js"></script>
-	<script src="../监听器Observer和订阅者Watcher功能/watcher.js"></script>
-	<script src="../指令解析器compile/v-model和事件指令.js"></script>
+	<script src="../监听器Observer和订阅者Watcher功能/vue_observer.js"></script>
+	<script src="../监听器Observer和订阅者Watcher功能/vue_watcher.js"></script>
+	<script src="../指令解析器compile/vue_compile.js"></script>
 	<script src="../selfVue/selfVue添加了v-model和事件.js"></script>
 	<script>
 		var self_vue = new SelfVue({
@@ -32,11 +32,11 @@
 			},
 			methods: {
 				clickMe: function () {
-          this.event = '事件重新赋值'
-          this.name2 = "我刚刚点击了event按钮"
+          this.event = '事件重新赋值' + new Date().getMilliseconds()
+          this.name2 = "我刚刚点击了event按钮" + new Date().getMilliseconds()
 				}
 			},
-			mounted: function () {
+			mounted () {
 				this.name1 = "name1 在mounted之后的值"
 			}
 		});

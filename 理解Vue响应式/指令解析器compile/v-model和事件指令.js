@@ -5,7 +5,7 @@ function Compile(elm) {//
   this.init();
 }
 Compile.prototype = {
-  init: function () {
+  init () {
     if (this.el) {
       //将需要解析的DOM节点存入fragment片段里再进行处理
       this.fragment = this.nodeToFragment(this.el);
@@ -20,7 +20,7 @@ Compile.prototype = {
     }
   },
   //创建代码片段
-  nodeToFragment: function (el) {
+  nodeToFragment (el) {
     var fragment = document.createDocumentFragment();
     var child = el.firstChild;
     while (child) {//将DOM元素移入fragment
@@ -30,92 +30,96 @@ Compile.prototype = {
     return fragment;
   },
   //对所有子节点进行判断，1.初始化视图数据,2.绑定更新函数的订阅器
-  compileElement: function (el) {
+  compileElement (el) {
     var childNodes = el.childNodes;
-    var self = this;
-    [].slice.call(childNodes).forEach(function (node) {
+    // tip : slice将类数组转化为数组
+    [...childNodes].forEach( (node) => {
       var reg = /\{\{(.*)\}\}/;//匹配" {{}} "
       var text = node.textContent;
       /*      补充判断：     */
-      if (self.isElementNode(node)) {//元素节点判断
-        self.compile(node);
-      } else if (self.isTextNode(node) && reg.test(text)) {//文本节点判断 ，判断" {{}} "
-        self.compileText(node, reg.exec(text)[1]);
+      if (this.isElementNode(node)) {//元素节点判断
+        this.compile(node);
+      } else if (this.isTextNode(node) && reg.test(text)) {//文本节点判断 ，判断" {{}} "
+        this.compileText(node, reg.exec(text)[1]);
       }
 
       if (node.childNodes && node.childNodes.length) {
-        self.compileElement(node);//// 继续递归遍历子节点
+        this.compileElement(node);//// 继续递归遍历子节点
       }
     });
   },
   //初始化视图updateText和生成订阅器:
-  compileText: function (node, exp) {
-    var self = this;
+  compileText (node, exp) {
     var initText = this.vm[exp];   //代理访问self_vue.data.name1 -> self_vue.name1
     this.updateText(node, initText);//将初始化的数据初始化到视图中
-    new Watcher(this.vm, exp, function (value) {//{}，name, // 生成订阅器并绑定更新函数
-      self.updateText(node, value);
+    new Watcher(this.vm, exp, (value) => {//{}，name, // 绑生成订阅器并定更新函数
+      this.updateText(node, value);
     })
   },
-  updateText: function (node, value) {
+  updateText (node, value) {
     node.textContent = typeof value == 'undefined' ? '' : value;
   },
-  compile: function (node) {
+  compile (node) {
     var nodeAttrs = node.attributes;
-    var self = this;
-    Array.prototype.forEach.call(nodeAttrs, function (attr) {
+    Array.prototype.forEach.call(nodeAttrs, (attr) => {
       var attrName = attr.name;
-      if (self.isDirective(attrName)) {//查到" v- "
+      if (this.isDirective(attrName)) {//查到" v- "
         var exp = attr.value;
         var dir = attrName.substring(2);//" v-on/v-model "
-
-        if (self.isEventDirective(dir)) { // 事件指令
-          self.compileEvent(node, self.vm, exp, dir);
+        if (this.isEventDirective(dir)) { // 事件指令
+          this.compileEvent(node, this.vm, exp, dir);
         } else {
-          self.compileModel(node, self.vm, exp, dir);
+          // tip : dir是model ； exp是title
+          this.compileModel(node, this.vm, exp);
         }
         node.removeAttribute(attrName);
       }
     })
   },
-  compileEvent: function (node, vm, exp, dir) {//代码片段<><>，{data:;vm:;el:;},v-on="add",on:
-    var eventType = dir.split(':')[1];//on
+  // tip : 解析出v-on后面绑定的事件名eventType和自定义事件的事件名cb，给节点node绑定eventType事件，事件的回调用方法cb
+  compileEvent(node, vm, exp, dir) {//代码片段<><>，{data:;vm:;el:;},v-on="add",on:
+    // tip : on:click => eventType = click  
+    var eventType = dir.split(':')[1];
     var cb = vm.methods && vm.methods[exp];
-
+    // tip : 在node上添加事件evetType，事件的回调是cb的拷贝函数，拷贝函数里的this是当前的Vue实例对象vm
     if (eventType && cb) {
-      node.addEventListener(eventType, cb.bind(vm), false);
+      node.addEventListener(eventType, cb.bind(vm));
     }
   },
-  compileModel: function (node, vm, exp, dir) {//代码片段<><>，{data:;vm:;el:;},v-on="addCounts",model:
-    var self = this;
+  // tip : 两个操作：1，将v-model元素的value更新为this[exp]，并将exp初始化未watcher，每次exp的值改变，更新v-model元素的value    2，给v-model的元素绑定input事件，每次输入框内容改变的时候，同步更新 this[exp]。由于第1步中，this[exp]已经初始化未watcher，所以会触发observer.js中set函数，this[exp]对应的watcher的回调函数modelUpdater将会执行
+  compileModel (node, vm, exp) {//代码片段<><>，{data:;vm:;el:;},v-on="addCounts",model:
     var val = this.vm[exp];
     this.modelUpdater(node, val);
-    new Watcher(this.vm, exp, function (value) {
-      self.modelUpdater(node, value);
+    new Watcher(this.vm, exp, (value) => {
+      console.log("watcher触发了~~")
+      this.modelUpdater(node, value);
     });
 
-    node.addEventListener('input', function (e) {
+    node.addEventListener('input', (e) => {
       var newValue = e.target.value;
       if (val === newValue) {
         return;
       }
-      self.vm[exp] = newValue;
+      console.log("我在input~~")
+      this.vm[exp] = newValue;
+      console.log("input修改完毕~~")
       val = newValue;
     })
   },
-  modelUpdater: function (node, value) {
+  modelUpdater(node, value) {
+    console.log("node.value 改了~~")
     node.value = typeof value == 'undefined' ? '' : value;
   },
-  isTextNode: function (node) {
+  isTextNode(node) {
     return node.nodeType == 3;//文本节点
   },
-  isElementNode: function (node) {
+  isElementNode(node) {
     return node.nodeType == 1;//元素节点<p></p>
   },
-  isDirective: function (attr) {//查找自定义属性为：v- 的属性
+  isDirective(attr) {//查找自定义属性为：v- 的属性
     return attr.indexOf('v-') == 0;
   },
-  isEventDirective: function (dir) { // 事件指令
+  isEventDirective(dir) { // 事件指令
     return dir.indexOf('on:') === 0
   }
 };
